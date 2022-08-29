@@ -1,0 +1,31 @@
+.component-list {
+  .component-list-inner {
+    h2 {
+      margin: 0;
+      font-size: 14px;
+    }
+
+    .component-list-item {
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background-color: white;
+      width: 80px;
+      height: 90px;
+      border: 1px solid #eee;
+
+      img {
+        max-height: 40px;
+        max-width: 40px;
+      }
+
+      .text {
+        height: 30px;
+        line-height: 15px;
+        font-size: 12px;
+      }
+    }
+  }
+}
