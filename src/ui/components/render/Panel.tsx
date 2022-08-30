@@ -1,8 +1,10 @@
 import style from "./render.module.scss"
-export const Panel = () => {
+export const Panel = ({children}: {
+  children: JSX.Element
+}) => {
   return (
     <div className={style.panel}>
-      <h1>面板</h1>
+      {children}
     </div>
   )
 }

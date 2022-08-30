@@ -24,7 +24,6 @@ export const ComponentList = () => {
 
   return (
     <div className={style['component-list']} key={ver}>
-      <h2>这是list</h2>
       {
         groupList.map((list, i) => {
           const title = groupTitle[list[0].group]
@@ -34,7 +33,10 @@ export const ComponentList = () => {
               {
                 list.map(compConf => {
                   return (
-                    <div key={compConf.name} className={style['component-list-item']}>
+                    <div 
+                      key={compConf.name}
+                      draggable
+                      className={style['component-list-item']}>
                       <img src={compConf.imageUrl}/>
                       <div className={style.text}>{compConf.title}</div>
                     </div>
