@@ -1,3 +1,6 @@
+import { Map as ImmutableMap } from "immutable"
+import { Node } from "./instance/Node"
+
 export type SizeMode =  "fill" | "value" | "fixed" | 'auto'
 
 export type SizeUnitInput = {
@@ -27,3 +30,7 @@ export type BoxDescriptorInput = {
   marginRight?: number | string | SizeUnitInput
   marginBottom?: number | string | SizeUnitInput
 }
+
+export type NodeData = ImmutableMap<string, any>
+
+export type NodeType = Node

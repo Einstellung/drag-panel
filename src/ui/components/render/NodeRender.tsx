@@ -1,9 +1,37 @@
+import { useEffect, useState } from "react"
+import { Node } from "../../../meta"
 import { Draggable } from "../draggable/Draggable"
 
-export const NodeRender = () => {
+function Styled({node, children}: {
+  node: Node,
+  children: JSX.Element
+}) {
+  const box = node.getBox()
+
+  return(
+    <div
+      style={{
+        left: box.left.toString(),
+        top: box.top.toString(),
+        width: box.width.toString(),
+        height: box.height.toString(),
+      }}
+    >
+      {children}
+    </div>
+  )
+}
+
+
+
+function InnerRender({node}: {
+  node: Node | null
+}) {
+  
+  let box
   return (
     <div>
-      <Draggable 
+      <Draggable
         onDragEnd={e => {
         console.log("val test")
       }}
@@ -16,6 +44,10 @@ export const NodeRender = () => {
           style={{
             width: "fit-content"
           }}
+          onClick={() => {
+            const box = node?.getBox()
+            console.log("🚀 ~ file: NodeRender.tsx ~ line 49 ~ box", box)
+          }}
           >
             面板
         </h1>
@@ -23,3 +55,13 @@ export const NodeRender = () => {
     </div>
   )
 }
+
+export const NodeRender = ({node}: {
+  node: Node | null
+}) => {
+  return <InnerRender node={node}/>
+}
+
+// export const NodeRender = () => {
+//   return <InnerRender/>
+// }

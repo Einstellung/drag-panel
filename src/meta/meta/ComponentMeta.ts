@@ -1,5 +1,6 @@
 import { BoxDescriptor } from "../BoxDescriptpr"
 import { BoxDescriptorInput } from "../standard.types"
+import { Map as ImmutableMap } from "immutable"
 
 export interface ComponentMetaConfig {
   // 组件名称 
@@ -43,7 +44,7 @@ export class ComponentMeta {
   group: string
   imageUrl : string
   title : string
-  // box : BoxDescriptor
+  box : BoxDescriptor
   // intrinsic? :  boolean
   // url? : string
   style? : any
@@ -55,13 +56,26 @@ export class ComponentMeta {
     // this.intrinsic = config.intrinsic
     this.style = config.style
     // !!初始化的时候似乎box不需要初始化
-    // this.box = new BoxDescriptor(config.box)
+    this.box = new BoxDescriptor(config.box)
   }
 
   /**
    * 创建实例数据
+   * @param id 版本信息
    */
-  createData() {
+  createData(id: number, box: BoxDescriptor | null) {
+    let data = ImmutableMap({
+      id,
+      parent: null,
+      name: this.name,
+      group: this.group,
+      style: ImmutableMap<string, any>(),
+      children: [],
+      allowDrag: true,
+      isMoving: false,
+      box
+    })
 
+    return data
   }
 }

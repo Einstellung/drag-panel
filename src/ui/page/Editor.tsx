@@ -6,11 +6,11 @@ import style from "./ui.module.scss"
 
 export const Editor = () => {
 
-  // useEditor()
+  const editor = useEditor()
   return <div className={style.container}>
-    <ComponentList />
-    <Panel>
-      <NodeRender></NodeRender>
+    <ComponentList editor={editor}/>
+    <Panel editor={editor}>
+      <NodeRender node={editor.getNode()}/>
     </Panel>
   </div>
 }

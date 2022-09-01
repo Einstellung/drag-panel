@@ -1,9 +1,13 @@
-import { useEffect } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { ComponentsLoader } from "../../loader"
+import { UIModel } from "../object/UIModel"
 
 export const useEditor = () => {
+  const editor = useMemo(() => new UIModel(), [])
+
   useEffect(() => {
-    console.log("我执行了")
     ComponentsLoader.get().load()
   }, [])
+
+  return editor
 }
