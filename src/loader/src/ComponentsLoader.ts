@@ -3,6 +3,8 @@ import { ComponentMeta, ComponentMetaConfig, metaSchema } from "../../meta";
 import * as R from 'ramda'
 import defaultObj from "../yml/default.yml"
 import buttonObj from "../yml/button.yml"
+import rootObj from "../yml/root.yml"
+import pageObj from "../yml/page.yml"
 import { deepMerge } from "./deepMerge";
 import { Validator } from "jsonschema"
 import { load } from "js-yaml";
@@ -13,15 +15,20 @@ const metas: {[key: string]: ComponentMeta} = {}
 const ymls: {[key: string]: ComponentMetaConfig} = {}
 
 // 遍历yml，并将结果赋值给ymls
-const objects = import.meta.glob("../yml/*.yml")
-Object.keys(objects).forEach(key => {
-  key = key.replace("../yml/", "")
-  const fileName = key.split(".")[0]
-  if(fileName !== "default") {
-    const config = buttonObj as ComponentMetaConfig
-    ymls[config.group + "." + config.name] = config
-  }
-})
+// const objects = import.meta.glob("../yml/*.yml")
+// Object.keys(objects).forEach(key => {
+//   key = key.replace("../yml/", "")
+//   const fileName = key.split(".")[0]
+//   if(fileName !== "default") {
+//     const config = buttonObj as ComponentMetaConfig
+//     ymls[config.group + "." + config.name] = config
+//   }
+// })
+
+const ymlObjs = [buttonObj, rootObj, pageObj]
+for (let config of ymlObjs ) {
+  ymls[config.group + "." + config.name] = config as ComponentMetaConfig
+}
 
 // async function loadDefault() {
 //   const val = import("../yml/default.yml")
@@ -50,7 +57,7 @@ export class ComponentsLoader {
     return ComponentsLoader.inst
   }
 
-  private loadByName(group: string, name: string) {
+  loadByName(group: string, name: string) {
     const key = group + "." + name
     if(!metas[key]) {
       const props = R.clone(ComponentsLoader.defaultProps)
@@ -65,6 +72,7 @@ export class ComponentsLoader {
       const meta = new ComponentMeta(merged)
       metas[key] = meta
     }
+    return metas[key]
   }
 
   load() {
@@ -73,9 +81,6 @@ export class ComponentsLoader {
       this.loadByName(group, name)
     }
     this.list = Object.values(metas)
-    for(let val of this.list) {
-      console.log("list val is ", val)
-    }
   }
 }
 

@@ -10,7 +10,7 @@ export const Editor = () => {
   return <div className={style.container}>
     <ComponentList editor={editor}/>
     <Panel editor={editor}>
-      <NodeRender node={editor.getNode()}/>
+      <NodeRender node={editor.getRoot()}/>
     </Panel>
   </div>
 }

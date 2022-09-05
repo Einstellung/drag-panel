@@ -1,12 +1,16 @@
+import { Emiter } from "./Emiter"
+
 type StateTransferFunction = (...args: Array<any>) => void
 
 export class StateMachine<
   S extends number,
-  A extends number
-> {
+  A extends number,
+  Topic extends number
+> extends Emiter<Topic> {
   private state: S
   private transferTable: Map<S, Map<A, [StateTransferFunction, S]>>
   constructor(initialState: S) {
+    super()
     this.state = initialState
     this.transferTable = new Map()
   }

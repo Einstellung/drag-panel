@@ -1,0 +1,14 @@
+group : container 
+name : root 
+componentType: react
+imageUrl : https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png?tn=02003391_82_hao_pg
+# title : 矩形容器
+title : 根节点容器
+url : local.Root
+style :
+  backgroundColor : "#ddd"
+box : 
+  width : 3200
+  height : 3200
+  container : true
+intrinsic : true
