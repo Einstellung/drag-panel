@@ -24,12 +24,6 @@ export const Draggable = (props: DraggableProps) => {
   }
 
   const finalProps = mergeDeepLeft(props.children.props, draggableProps)
-  console.log("node diffx", node.diffX)
 
   return cloneElement(props.children, finalProps)
-  // return (
-  //   <div>
-  //     {props.children}
-  //   </div>
-  // )
 }

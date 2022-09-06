@@ -1,7 +1,20 @@
 import { cloneElement, ElementType, useEffect, useState } from "react"
-import { Node } from "../../../meta"
+import { Bridge, Node, UIComponentRenderOptions } from "../../../meta"
 import { Draggable } from "../draggable/Draggable"
 import { getLocalComponentByURL } from "./getLocalComponentByURL"
+import { UIComponentProps } from "../../../meta";
+
+/** 渲染组件子组件 */
+function _render(node: Node, options: UIComponentRenderOptions) {
+  const reactElement = (
+    <NodeRender 
+      node={node}
+      key={options.key}
+    />
+  )
+
+  return reactElement
+}
 
 function Styled({node, children}: {
   node: Node | null,
@@ -25,13 +38,13 @@ function Styled({node, children}: {
 }
 
 
-
 function InnerRender({node, C}: {
-  node: Node | null,
-  C: ElementType
+  node: Node,
+  C: ElementType<UIComponentProps>
 }) {
   
-  let box
+  const bridge = new Bridge(node)
+  bridge.renderForReact = _render
   return (
     <div>
       <Draggable
@@ -45,7 +58,7 @@ function InnerRender({node, C}: {
         <Styled
           node={node}
         >
-          <C />
+          <C bridge={bridge}/>
         </Styled>
       </Draggable>
     </div>

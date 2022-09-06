@@ -1,5 +1,8 @@
-import { ComponentMeta, Node, Page } from "../../meta";
+import { ComponentsLoader } from "../../loader";
+import { ComponentMeta, JsonPage, Node, Page, Topic } from "../../meta";
 import { StateMachine } from "../../utils";
+import { NodeSelector } from "./NodeSelector";
+import { SelectionNew } from "./SelectionNew";
 
 export enum UIStates{
   Start,
@@ -27,18 +30,23 @@ export enum UIEvents {
   EvtStartResize
 }
 
-export class UIModel extends StateMachine<UIStates, UIEvents> {
+export class UIModel extends StateMachine<UIStates, UIEvents, Topic> {
 
   dropComponentMeta: ComponentMeta | null = null
   dropComponentPosition: [number, number] = [0, 0]
   page: Page
-  uiNode: Node | null = null
+  /** page root */
+  root: Node
+  /** 现在选择的节点 */
+  selection: SelectionNew
 
-  constructor(){
+  constructor(json: JsonPage){
     super(UIStates.Start)
 
     this.describeDragNewElement()
-    this.page = new Page()
+    this.page = new Page(json, ComponentsLoader.get())
+    this.selection = new SelectionNew()
+    this.root = this.page.getRoot()
   }
 
   // 这里处理拖拽新元素逻辑
@@ -49,16 +57,19 @@ export class UIModel extends StateMachine<UIStates, UIEvents> {
 
     this.register(UIStates.StartAdd, UIStates.Adding, UIEvents.EvtAddDraging, (position) => {
       this.dropComponentPosition = position
-      console.log("drag moving")
+      // 如果只是单纯的receiver，因为是root节点其实不需要去做比较？？
+      const receiver = NodeSelector.selectForDrop(this.root, position, null)
+      this.emit(Topic.ShadowReceiverChanged, receiver)
     })
 
     this.register(UIStates.Adding, UIStates.Added, UIEvents.EvtDrop, () => {
       const position = this.dropComponentPosition
-      // console.log("🚀 ~ file: UIModel.ts ~ line 54 ~ UIModel ~ this.register ~ position", position)
       const node = this.page.createFromMetaNew(this.dropComponentMeta!)
       console.log("🚀 ~ file: UIModel.ts ~ line 58 ~ UIModel ~ this.register ~ node", node)
-      // root的构造node的过程再外面实现一下
-      this.uiNode = node
+      const receiver = NodeSelector.selectForDrop(this.root, position, null)
+      receiver?.addToAbsolute(node)
+      this.dropComponentMeta = null
+      receiver?.emit(Topic.NewNodeAdded)
     })
 
     this.register(UIStates.Added, UIStates.Start, UIEvents.AUTO, () => {
@@ -69,7 +80,7 @@ export class UIModel extends StateMachine<UIStates, UIEvents> {
     return this.dropComponentPosition
   }
 
-  public getNode() {
-    return this.uiNode
+  public getRoot() {
+    return this.root
   }
 }

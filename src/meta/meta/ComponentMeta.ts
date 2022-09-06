@@ -1,6 +1,6 @@
 import { BoxDescriptor } from "../BoxDescriptpr"
-import { BoxDescriptorInput } from "../standard.types"
-import { Map as ImmutableMap } from "immutable"
+import { BoxDescriptorInput, JsonNode } from "../standard.types"
+import { fromJS, Map as ImmutableMap } from "immutable"
 
 export interface ComponentMetaConfig {
   // 组件名称 
@@ -37,6 +37,7 @@ export interface ComponentMetaConfig {
 
   // external
   // todo
+  url?: string
 }
 
 export class ComponentMeta {
@@ -45,15 +46,16 @@ export class ComponentMeta {
   imageUrl : string
   title : string
   box : BoxDescriptor
-  // intrinsic? :  boolean
-  // url? : string
+  intrinsic? :  boolean
+  url? : string
   style? : any
   constructor(config: ComponentMetaConfig) {
     this.name = config.name
     this.group = config.group
     this.imageUrl = config.imageUrl
     this.title = config.title
-    // this.intrinsic = config.intrinsic
+    this.intrinsic = config.intrinsic
+    this.url = config.url
     this.style = config.style
     // !!初始化的时候似乎box不需要初始化
     this.box = new BoxDescriptor(config.box)

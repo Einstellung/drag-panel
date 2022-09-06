@@ -11,6 +11,7 @@
   "dependencies": {
     "@types/node": "^18.7.13",
     "immutable": "^4.1.0",
+    "invariant": "^2.2.4",
     "js-yaml": "^4.1.0",
     "jsonschema": "^1.4.1",
     "ramda": "^0.28.0",
@@ -21,6 +22,7 @@
     "vite-plugin-yaml2": "^1.0.0"
   },
   "devDependencies": {
+    "@types/invariant": "^2.2.35",
     "@types/js-yaml": "^4.0.5",
     "@types/ramda": "^0.28.15",
     "@types/react": "^18.0.17",
