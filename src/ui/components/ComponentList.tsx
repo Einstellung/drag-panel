@@ -30,7 +30,7 @@ export const ComponentList = ({editor}: {
         groupList.map((list, i) => {
           const title = groupTitle[list[0].group]
           return(
-            <div className={style['component-list-inner']} key={i}>
+            <div className={style['component-list-group']} key={i}>
               <h2>{title}</h2>
               {
                 list.map(compConf => {

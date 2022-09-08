@@ -16,20 +16,27 @@ function _render(node: Node, options: UIComponentRenderOptions) {
   return reactElement
 }
 
-function Styled({node, children}: {
-  node: Node | null,
-  children: JSX.Element
+function Styled({node, children, style}: {
+  node: Node,
+  children: JSX.Element,
+  style?: any // 需要style，把父组件样式传过来
 }) {
-  const box = node?.getBox()
+  const box = node.getBox()
+  console.log("🚀 ~ file: NodeRender.tsx ~ line 25 ~ box", box)
+  console.log("node getStyleObj", node.getStyleObj())
 
   return(
     <div
+      className={"dragPanel-" + node.getName()}
       style={{
         // left: box.left.toString(),
         // top: box.top.toString(),
-        // width: box.width.toString(),
-        // height: box.height.toString(),
-        fontSize: "20px"
+        width: box.width.toString(),
+        height: box.height.toString(),
+        position: box.position,
+        fontSize: "20px",
+        ...style,
+        ...node.getStyleObj(), // yml样式
       }}
     >
       {children}
@@ -45,35 +52,33 @@ function InnerRender({node, C}: {
   
   const bridge = new Bridge(node)
   bridge.renderForReact = _render
+
+  const passProps = node.getPassProps().toJS()
+
+  const box = node.getBox()
+  console.log("box value is ", box.left.toString(), box.top.toString())
   return (
-    <div>
-      <Draggable
-        onDragEnd={e => {
-        console.log("val test")
-      }}
-        onDrag={e => {
-          console.log("on drag")
-        }}
+    <Draggable
+      initialPosition={[box.left.toString(), box.top.toString()]}
+    >
+      <Styled
+        node={node}
       >
-        <Styled
-          node={node}
-        >
-          <C bridge={bridge}/>
-        </Styled>
-      </Draggable>
-    </div>
+        <C bridge={bridge} passProps={passProps}/>
+      </Styled>
+    </Draggable>
   )
 }
 
 export const NodeRender = ({node}: {
-  node: Node | null
+  node: Node
 }) => {
   console.log("node meta val", node?.meta.url)
-  if(node?.meta.url) {
+  if(node.meta.url) {
     const localComponent = getLocalComponentByURL(node.meta.url)
     if(localComponent) {
       return <InnerRender node={node} C={localComponent}/>
     }
   }
-  throw new Error(`Component ${node?.getGroup() + "." + node?.getName()} not found.`)
+  throw new Error(`Component ${node.getGroup() + "." + node?.getName()} not found.`)
 }

@@ -1,7 +1,8 @@
 .panel {
   flex: 1;
-  margin-left: 80px;
   border: 2px solid #e0e0e0;
   box-shadow: -1px -1px 1px #f1f1f1;
   cursor: pointer;
+  position: relative;
+  overflow: scroll;
 }

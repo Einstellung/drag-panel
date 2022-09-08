@@ -1,3 +1,5 @@
+import { Rect } from "./instance/Rect";
+import { Node } from "./instance/Node";
 import { ComponentMeta } from "./meta/ComponentMeta";
 import { BoxDescriptorInput, CSSDisplay, CSSPosition, FlexDirection, SizeMode, SizeUnitInput } from "./standard.types";
 

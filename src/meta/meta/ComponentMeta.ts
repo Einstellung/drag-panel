@@ -49,6 +49,8 @@ export class ComponentMeta {
   intrinsic? :  boolean
   url? : string
   style? : any
+  defaultProps: any
+
   constructor(config: ComponentMetaConfig) {
     this.name = config.name
     this.group = config.group
@@ -57,6 +59,7 @@ export class ComponentMeta {
     this.intrinsic = config.intrinsic
     this.url = config.url
     this.style = config.style
+    this.defaultProps = config.defaultProps
     // !!初始化的时候似乎box不需要初始化
     this.box = new BoxDescriptor(config.box)
   }
@@ -66,15 +69,17 @@ export class ComponentMeta {
    * @param id 版本信息
    */
   createData(id: number, box: BoxDescriptor | null) {
+
     let data = ImmutableMap({
       id,
       parent: null,
       name: this.name,
       group: this.group,
-      style: ImmutableMap<string, any>(),
+      style: fromJS(this.style) as ImmutableMap<string, any>,
       children: [],
       allowDrag: true,
       isMoving: false,
+      passProps: fromJS(this.defaultProps || {}),
       box
     })
 

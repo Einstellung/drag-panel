@@ -13,20 +13,17 @@ export function useDragNode(props: DragEvents): [DragNode, typeof handlers] {
   const handlers = {
     onMouseDown: (e: DragEvent) => {
       // props.onDragEnd && props.onDragEnd(node)
-      console.log(11111111)
       node.dragging = true
       node.start(e)
     },
     onMouseMove: (e: MouseEvent) => {
       if(node.dragging) {
-        console.log(22222222)
         node.update(e)
         setVer(x => x + 1)
       }
     },
     onMouseUp: (e: MouseEvent) => {
       if(node.dragging) {
-        console.log(33333333)
         node.update(e)
         node.dragging = false
         node.init()

@@ -1,20 +1,21 @@
 import { Bridge } from "../../../meta"
 
-export const ListRender = ({bridge}: {
-  bridge: Bridge
+export const ListRender = ({bridge, passProps}: {
+  bridge: Bridge,
+  passProps?: any
 }) => {
   const children = bridge.getNode().getChildren()
-  console.log("🚀 ~ file: ListRender.tsx ~ line 7 ~ children", children)
 
   return (
-    <div>
+    <>
       {
         children.map((childNode, i) => {
           return bridge.render(childNode, {
-            key: childNode.getId()
+            key: childNode.getId(),
+            passProps
           })
         })
       }
-    </div>
+    </>
   )
 }
