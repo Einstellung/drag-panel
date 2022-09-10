@@ -32,7 +32,7 @@ export interface ComponentMetaConfig {
 
   author : string,
 
-  // 初始属性
+  // 传递给组件的初始属性
   defaultProps : any,
 
   // external

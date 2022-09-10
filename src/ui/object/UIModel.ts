@@ -55,19 +55,20 @@ export class UIModel extends StateMachine<UIStates, UIEvents, Topic> {
       this.dropComponentMeta = meta
     })
 
-    this.register(UIStates.StartAdd, UIStates.Adding, UIEvents.EvtAddDraging, (position) => {
-      this.dropComponentPosition = position
+    this.register(UIStates.StartAdd, UIStates.Adding, UIEvents.EvtAddDraging, (worldPosition) => {
+      this.dropComponentPosition = worldPosition
       // 如果只是单纯的receiver，因为是root节点其实不需要去做比较？？
-      const receiver = NodeSelector.selectForDrop(this.root, position, null)
+      const receiver = NodeSelector.selectForDrop(this.root, worldPosition, null)
       this.emit(Topic.ShadowReceiverChanged, receiver)
     })
 
     this.register(UIStates.Adding, UIStates.Added, UIEvents.EvtDrop, () => {
-      const position = this.dropComponentPosition
+      const worldPosition = this.dropComponentPosition
+      console.log("[UIModel regionPosition]", worldPosition)
       const node = this.page.createFromMetaNew(this.dropComponentMeta!)
-      console.log("🚀 ~ file: UIModel.ts ~ line 58 ~ UIModel ~ this.register ~ node", node)
-      const receiver = NodeSelector.selectForDrop(this.root, position, null)
-      receiver?.addToAbsolute(node)
+      const receiver = NodeSelector.selectForDrop(this.root, worldPosition, null)
+
+      receiver?.addToAbsolute(node, worldPosition)
       this.dropComponentMeta = null
       receiver?.emit(Topic.NewNodeAdded)
     })

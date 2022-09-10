@@ -4,6 +4,7 @@ import { DragEvents } from "./draggable.types"
 import { useDragNode } from "./useDragNode"
 
 type DraggableProps = {
+  initialPosition: [string, string],
   children: JSX.Element
 } & DragEvents
 
@@ -13,9 +14,9 @@ export const Draggable = (props: DraggableProps) => {
 
   const style = {
     position: "absolute",
-    top: `${node.startX+200}px`,
-    left: `${node.startY+200}px`,
-    transform: `translate(${node.diffX}px, ${node.diffY}px)`
+    left: props.initialPosition[0],
+    top: props.initialPosition[1],
+    // transform: `translate(${node.diffX}px, ${node.diffY}px)`
   }
 
   const draggableProps = {

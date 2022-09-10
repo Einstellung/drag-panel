@@ -1,8 +1,9 @@
-import { cloneElement, ElementType, useEffect, useState } from "react"
+import { cloneElement, ElementType, useContext, useEffect, useRef, useState } from "react"
 import { Bridge, Node, UIComponentRenderOptions } from "../../../meta"
 import { Draggable } from "../draggable/Draggable"
 import { getLocalComponentByURL } from "./getLocalComponentByURL"
 import { UIComponentProps } from "../../../meta";
+import { RenderContext } from "./RenderContext";
 
 /** 渲染组件子组件 */
 function _render(node: Node, options: UIComponentRenderOptions) {
@@ -22,11 +23,20 @@ function Styled({node, children, style}: {
   style?: any // 需要style，把父组件样式传过来
 }) {
   const box = node.getBox()
-  console.log("🚀 ~ file: NodeRender.tsx ~ line 25 ~ box", box)
-  console.log("node getStyleObj", node.getStyleObj())
+  const ref = useRef<HTMLDivElement>(null)
+  const context = useContext(RenderContext)
 
+  useEffect(() => {
+    node.setMount(ref.current!, context.cord)
+    console.log("this touch node", node)
+
+    // @ts-ignore
+    window.mount = node.getMountPoint()
+  })
+  
   return(
     <div
+      ref={ref}
       className={"dragPanel-" + node.getName()}
       style={{
         // left: box.left.toString(),
@@ -34,7 +44,6 @@ function Styled({node, children, style}: {
         width: box.width.toString(),
         height: box.height.toString(),
         position: box.position,
-        fontSize: "20px",
         ...style,
         ...node.getStyleObj(), // yml样式
       }}
@@ -56,7 +65,6 @@ function InnerRender({node, C}: {
   const passProps = node.getPassProps().toJS()
 
   const box = node.getBox()
-  console.log("box value is ", box.left.toString(), box.top.toString())
   return (
     <Draggable
       initialPosition={[box.left.toString(), box.top.toString()]}
