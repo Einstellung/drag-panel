@@ -5,23 +5,28 @@ import { useDragNode } from "./useDragNode"
 
 type DraggableProps = {
   initialPosition: [string, string],
-  children: JSX.Element
+  children: JSX.Element,
+  dragEnable: boolean
 } & DragEvents
 
 export const Draggable = (props: DraggableProps) => {
 
   const [node, handlers] = useDragNode(props)
 
-  const style = {
+  const style: any = {
     position: "absolute",
     left: props.initialPosition[0],
     top: props.initialPosition[1],
-    // transform: `translate(${node.diffX}px, ${node.diffY}px)`
+  }
+
+  if(props.dragEnable) {
+    style.transform = `translate(${node.diffX}px, ${node.diffY}px)`
   }
 
   const draggableProps = {
+    draggable: props.dragEnable,
     style,
-    ...handlers,
+    dragHandlers: handlers,
   }
 
   const finalProps = mergeDeepLeft(props.children.props, draggableProps)

@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react"
-import { Rect } from "../../../meta"
+import { Rect, Topic } from "../../../meta"
 import { useBound } from "../../hooks/useBound"
 import { UIEvents, UIModel } from "../../object/UIModel"
 import style from "./render.module.scss"
@@ -30,15 +30,22 @@ export const Panel = ({children, editor}: {
       <div
         className={style.panel}
         ref={ref}
+        onMouseDown={e => {
+          editor.selection?.emit(Topic.MouseDownEventPass, e)
+        }}
         onMouseMove={e => {
-          const regionPosition = [
+          const worldPosition = [
             renderContext.cord.worldX(e.clientX),
             renderContext.cord.worldY(e.clientY)
           ]
-          editor.dispatch(UIEvents.EvtAddDraging, regionPosition)
+          editor.dispatch(UIEvents.EvtAddDraging, worldPosition)
+
+          editor.selection?.emit(Topic.MouseMoveEventPass, e)
         }}
         onMouseUp={e => {
           editor.dispatch(UIEvents.EvtDrop)
+
+          editor.selection?.emit(Topic.MouseUpEventPass, e)
         }}
       >
         {/* <Shadow regionPosition={regionPosition}/> */}

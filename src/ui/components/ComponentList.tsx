@@ -39,7 +39,6 @@ export const ComponentList = ({editor}: {
                       key={compConf.name}
                       draggable
                       onDragStart={e => {
-                        console.log("component drag start")
                         editor.dispatch(UIEvents.EvtStartDragAdd, compConf)
                       }}
                       className={style['component-list-item']}>

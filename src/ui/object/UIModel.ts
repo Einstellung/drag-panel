@@ -32,20 +32,23 @@ export enum UIEvents {
 
 export class UIModel extends StateMachine<UIStates, UIEvents, Topic> {
 
-  dropComponentMeta: ComponentMeta | null = null
-  dropComponentPosition: [number, number] = [0, 0]
+  private dropComponentMeta: ComponentMeta | null = null
+  private dropComponentPosition: [number, number] = [0, 0]
   page: Page
   /** page root */
   root: Node
   /** 现在选择的节点 */
-  selection: SelectionNew
+  selection: Node | null
 
   constructor(json: JsonPage){
     super(UIStates.Start)
 
     this.describeDragNewElement()
+    this.describeSelected()
+    this.describeDragMove()
     this.page = new Page(json, ComponentsLoader.get())
-    this.selection = new SelectionNew()
+    // this.selection = new SelectionNew()
+    this.selection = null
     this.root = this.page.getRoot()
   }
 
@@ -64,16 +67,33 @@ export class UIModel extends StateMachine<UIStates, UIEvents, Topic> {
 
     this.register(UIStates.Adding, UIStates.Added, UIEvents.EvtDrop, () => {
       const worldPosition = this.dropComponentPosition
-      console.log("[UIModel regionPosition]", worldPosition)
+      console.log("[UIModel worldPosition]", worldPosition)
       const node = this.page.createFromMetaNew(this.dropComponentMeta!)
       const receiver = NodeSelector.selectForDrop(this.root, worldPosition, null)
 
       receiver?.addToAbsolute(node, worldPosition)
       this.dropComponentMeta = null
       receiver?.emit(Topic.NewNodeAdded)
+      this.selection = node
     })
 
     this.register(UIStates.Added, UIStates.Start, UIEvents.AUTO, () => {
+    })
+  }
+
+  // 处理选中逻辑
+  private describeSelected() {
+    this.register([UIStates.Start, UIStates.Selected], UIStates.Selected, UIEvents.EvtSelected, (node: Node) => {
+      
+    })
+  }
+
+  // 处理拖拽的逻辑
+  private describeDragMove() {
+    this.register([UIStates.Start, UIStates.Moved], UIStates.Moved, UIEvents.EvtNodeMoved, (node: Node, vec: [number, number]) => {
+      
+      node.setXYByVec(vec)
+      node.emit(Topic.NodeMoved)
     })
   }
 

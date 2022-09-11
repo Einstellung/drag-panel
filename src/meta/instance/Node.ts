@@ -83,9 +83,21 @@ export class Node extends Emiter<Topic> {
     this.getBox().top.set(y)
   }
 
-  // setChildren(children: Array<Node>) {
-  //   this.data.set("children", children)
-  // }
+  /**
+   * vec情况下更正对挂载点偏移值
+   * @param vec 拖拽后对start偏移值
+   */
+  setXYByVec(vec: [number, number]) {
+    const box = this.getBox()
+    const x = box.left.toNumber()
+    const y = box.top.toNumber()
+
+    this.setXY(x + vec[0], y + vec[1])
+  }
+
+  setChildren(children: Array<Node>) {
+    this.data.set("children", children)
+  }
 
   // setInstanceData(key: string, value: any) {
   //   this.data = this.data.set(key, value)

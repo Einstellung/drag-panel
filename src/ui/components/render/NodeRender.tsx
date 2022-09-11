@@ -1,9 +1,11 @@
 import { cloneElement, ElementType, useContext, useEffect, useRef, useState } from "react"
-import { Bridge, Node, UIComponentRenderOptions } from "../../../meta"
+import { Bridge, Node, Topic, UIComponentRenderOptions } from "../../../meta"
 import { Draggable } from "../draggable/Draggable"
 import { getLocalComponentByURL } from "./getLocalComponentByURL"
 import { UIComponentProps } from "../../../meta";
 import { RenderContext } from "./RenderContext";
+import { UIEvents } from "../../object/UIModel";
+import { useSubscribe } from "../../hooks/useSubscribe";
 
 /** 渲染组件子组件 */
 function _render(node: Node, options: UIComponentRenderOptions) {
@@ -17,10 +19,12 @@ function _render(node: Node, options: UIComponentRenderOptions) {
   return reactElement
 }
 
-function Styled({node, children, style}: {
+function Styled({node, children, style, draggable, dragHandlers}: {
   node: Node,
   children: JSX.Element,
   style?: any // 需要style，把父组件样式传过来
+  draggable?: boolean // 同理要传draggable过来，要这里写一下
+  dragHandlers?: any
 }) {
   const box = node.getBox()
   const ref = useRef<HTMLDivElement>(null)
@@ -28,19 +32,26 @@ function Styled({node, children, style}: {
 
   useEffect(() => {
     node.setMount(ref.current!, context.cord)
-    console.log("this touch node", node)
+  }, [])
 
-    // @ts-ignore
-    window.mount = node.getMountPoint()
+  useSubscribe([node, Topic.MouseDownEventPass], (e: MouseEvent) => {
+    dragHandlers && dragHandlers.onMouseDown && dragHandlers.onMouseDown(e)
+  })
+
+  useSubscribe([node, Topic.MouseMoveEventPass], (e: MouseEvent) => {
+    dragHandlers && dragHandlers.onMouseMove && dragHandlers.onMouseMove(e)
+  })
+
+  useSubscribe([node, Topic.MouseUpEventPass], (e: MouseEvent) => {
+    dragHandlers && dragHandlers.onMouseUp && dragHandlers.onMouseUp(e)
   })
   
   return(
     <div
       ref={ref}
+      draggable={draggable}
       className={"dragPanel-" + node.getName()}
       style={{
-        // left: box.left.toString(),
-        // top: box.top.toString(),
         width: box.width.toString(),
         height: box.height.toString(),
         position: box.position,
@@ -59,6 +70,15 @@ function InnerRender({node, C}: {
   C: ElementType<UIComponentProps>
 }) {
   
+  const context = useContext(RenderContext)
+  const editor = context.editor!
+
+  const [, setVer] = useState(0)
+  // 数据发生变更时要触发重新渲染更新初始数据
+  useSubscribe([node, Topic.NodeMoved], () => {
+    setVer(x => x + 1)
+  })
+
   const bridge = new Bridge(node)
   bridge.renderForReact = _render
 
@@ -68,6 +88,19 @@ function InnerRender({node, C}: {
   return (
     <Draggable
       initialPosition={[box.left.toString(), box.top.toString()]}
+      dragEnable={node.isDraggable()}
+      onDrag={e => {
+        if(node.isDraggable()) {
+          console.log("onDrag", e)
+          // editor.dispatch(UIEvents.EvtNodeSyncMoving, node, [e.diffX, e.diffY])
+        }
+      }}
+      onDragEnd={e => {
+        if(node.isDraggable()) {
+          console.log("ondrag end", e)
+          editor.dispatch(UIEvents.EvtNodeMoved, node, [e.diffX, e.diffY])
+        }
+      }}
     >
       <Styled
         node={node}
