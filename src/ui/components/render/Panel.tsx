@@ -31,9 +31,11 @@ export const Panel = ({children, editor}: {
         className={style.panel}
         ref={ref}
         onMouseDown={e => {
+          e.preventDefault()
           editor.selection?.emit(Topic.MouseDownEventPass, e)
         }}
         onMouseMove={e => {
+          e.preventDefault()
           const worldPosition = [
             renderContext.cord.worldX(e.clientX),
             renderContext.cord.worldY(e.clientY)
@@ -43,6 +45,7 @@ export const Panel = ({children, editor}: {
           editor.selection?.emit(Topic.MouseMoveEventPass, e)
         }}
         onMouseUp={e => {
+          e.preventDefault()
           editor.dispatch(UIEvents.EvtDrop)
 
           editor.selection?.emit(Topic.MouseUpEventPass, e)
