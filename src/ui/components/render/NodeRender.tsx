@@ -91,13 +91,11 @@ function InnerRender({node, C}: {
       dragEnable={node.isDraggable()}
       onDrag={e => {
         if(node.isDraggable()) {
-          console.log("onDrag", e)
           // editor.dispatch(UIEvents.EvtNodeSyncMoving, node, [e.diffX, e.diffY])
         }
       }}
       onDragEnd={e => {
         if(node.isDraggable()) {
-          console.log("ondrag end", e)
           editor.dispatch(UIEvents.EvtNodeMoved, node, [e.diffX, e.diffY])
         }
       }}

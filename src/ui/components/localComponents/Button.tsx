@@ -1,4 +1,5 @@
 import { Bridge } from "../../../meta"
+import { TextInput } from "./TextInput"
 
 interface ButtonProps {
   bridge: Bridge,
@@ -9,8 +10,10 @@ export const Button = ({bridge, passProps}: ButtonProps) => {
 
   const text = passProps.text
   return (
-    <div>
-      <h1>{text}</h1>
+    <div className="">
+      <TextInput 
+        text={text}
+      />
     </div>
   )
 }
