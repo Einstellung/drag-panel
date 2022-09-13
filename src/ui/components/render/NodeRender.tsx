@@ -6,6 +6,7 @@ import { UIComponentProps } from "../../../meta";
 import { RenderContext } from "./RenderContext";
 import { UIEvents } from "../../object/UIModel";
 import { useSubscribe } from "../../hooks/useSubscribe";
+import { Selectable } from "../selectable/Selectable";
 
 /** 渲染组件子组件 */
 function _render(node: Node, options: UIComponentRenderOptions) {
@@ -59,7 +60,11 @@ function Styled({node, children, style, draggable, dragHandlers}: {
         ...node.getStyleObj(), // yml样式
       }}
     >
-      {children}
+      {/* {children} */}
+      {cloneElement(children, {
+        ...children.props,
+        DragHandlerOnMouseDown: dragHandlers?.onMouseDown
+      })}
     </div>
   )
 }
@@ -69,13 +74,21 @@ function InnerRender({node, C}: {
   node: Node,
   C: ElementType<UIComponentProps>
 }) {
+
+  function selectionChangeHandler(selected: boolean) {
+    if(selected) {
+      editor.dispatch(UIEvents.EvtSelected, node)
+    } else {
+      editor.dispatch(UIEvents.EvtCancelSelect)
+    }
+  }
   
   const context = useContext(RenderContext)
   const editor = context.editor!
 
   const [, setVer] = useState(0)
   // 数据发生变更时要触发重新渲染更新初始数据
-  useSubscribe([node, Topic.NodeMoved], () => {
+  useSubscribe([node, [Topic.NodeMoved, Topic.Resized]], () => {
     setVer(x => x + 1)
   })
 
@@ -91,7 +104,7 @@ function InnerRender({node, C}: {
       dragEnable={node.isDraggable()}
       onDrag={e => {
         if(node.isDraggable()) {
-          // editor.dispatch(UIEvents.EvtNodeSyncMoving, node, [e.diffX, e.diffY])
+          editor.dispatch(UIEvents.EvtNodeSyncMoving, node, [e.diffX, e.diffY])
         }
       }}
       onDragEnd={e => {
@@ -103,7 +116,12 @@ function InnerRender({node, C}: {
       <Styled
         node={node}
       >
-        <C bridge={bridge} passProps={passProps}/>
+        <Selectable
+          onSelectChanged={selectionChangeHandler}
+          node={node}
+        >
+          <C bridge={bridge} passProps={passProps}/>
+        </Selectable>
       </Styled>
     </Draggable>
   )

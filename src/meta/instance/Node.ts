@@ -83,6 +83,14 @@ export class Node extends Emiter<Topic> {
     this.getBox().top.set(y)
   }
 
+  setXYWH(x: number, y: number, w: number, h: number) {
+    const box = this.getBox()
+    box.left.set(x)
+    box.top.set(y)
+    box.width.set(w)
+    box.height.set(h)
+  }
+
   /**
    * vec情况下更正对挂载点偏移值
    * @param vec 拖拽后对start偏移值
@@ -193,6 +201,15 @@ export class Node extends Emiter<Topic> {
 
     const [x, y] = parent.absPosition()
     return [x + rect.left, y + rect.top]
+  }
+
+  /**
+   * 返回挂载点[worldX, worldY, width, height]
+   */
+  absMountPointRect() {
+    const rect = this.getMountPointRect()
+    const [x, y] = this.absPosition()
+    return new Rect(x, y, rect.width, rect.height)
   }
 
   /** (x,y) 坐标是否在rect盒子里面 */

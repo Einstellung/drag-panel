@@ -4,7 +4,7 @@ import { useBound } from "../../hooks/useBound"
 import { UIEvents, UIModel } from "../../object/UIModel"
 import style from "./render.module.scss"
 import { RenderContext } from "./RenderContext"
-import { Shadow } from "./Shadow"
+// import { Shadow } from "./Shadow"
 
 
 export const Panel = ({children, editor}: {
@@ -43,12 +43,16 @@ export const Panel = ({children, editor}: {
           editor.dispatch(UIEvents.EvtAddDraging, worldPosition)
 
           editor.selection?.emit(Topic.MouseMoveEventPass, e)
+
+          // 缩放大小调整
+          editor.dispatch(UIEvents.EvtMoving, [e.clientX, e.clientY])
         }}
         onMouseUp={e => {
           e.preventDefault()
           editor.dispatch(UIEvents.EvtDrop)
 
           editor.selection?.emit(Topic.MouseUpEventPass, e)
+          editor.dispatch(UIEvents.EvtDrop)
         }}
       >
         {/* <Shadow regionPosition={regionPosition}/> */}

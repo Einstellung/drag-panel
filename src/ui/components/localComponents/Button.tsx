@@ -10,7 +10,7 @@ export const Button = ({bridge, passProps}: ButtonProps) => {
 
   const text = passProps.text
   return (
-    <div className="">
+    <div className="button">
       <TextInput 
         text={text}
       />
