@@ -39,6 +39,8 @@ export const ComponentList = ({editor}: {
                       key={compConf.name}
                       draggable
                       onDragStart={e => {
+                        // 防止了只响应dragStart，其他组件Drag监听不能响应问题
+                        e.preventDefault()
                         editor.dispatch(UIEvents.EvtStartDragAdd, compConf)
                       }}
                       className={style['component-list-item']}>

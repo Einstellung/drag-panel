@@ -52,7 +52,7 @@ export class UIModel extends StateMachine<UIStates, UIEvents, Topic> {
     this.root = this.page.getRoot()
   }
 
-  // 这里处理拖拽新元素逻辑
+  // 处理拖拽新元素逻辑
   private describeDragNewElement() {
     this.register(UIStates.Start, UIStates.StartAdd, UIEvents.EvtStartDragAdd, (meta: ComponentMeta) => {
       this.dropComponentMeta = meta
