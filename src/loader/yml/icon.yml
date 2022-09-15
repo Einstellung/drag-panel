@@ -1,0 +1,10 @@
+group : basic
+name : icon 
+componentType: react
+imageUrl : https://s1.ax1x.com/2022/09/14/vvJ46s.png
+title : 图标 
+box : 
+  width : 40
+  height : 40
+isContainer : false 
+url: local.Icon

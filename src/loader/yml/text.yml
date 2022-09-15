@@ -1,0 +1,12 @@
+group : basic
+name : "text"
+componentType: react
+imageUrl : "https://s1.ax1x.com/2022/09/14/vvJRfg.png"
+title : "文本"
+box :
+  width : 75
+  height : 24
+defaultProps : {
+  text : "请输入文本"
+}
+url : local.Text

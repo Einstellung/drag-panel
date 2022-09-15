@@ -3,6 +3,10 @@ import { ComponentMeta, ComponentMetaConfig, metaSchema } from "../../meta";
 import * as R from 'ramda'
 import defaultObj from "../yml/default.yml"
 import buttonObj from "../yml/button.yml"
+import imageObj from "../yml/image.yml"
+import iconObj from "../yml/icon.yml"
+import inputObj from "../yml/input.yml"
+import textObj from "../yml/text.yml"
 import rootObj from "../yml/root.yml"
 import pageObj from "../yml/page.yml"
 import { deepMerge } from "./deepMerge";
@@ -25,7 +29,8 @@ const ymls: {[key: string]: ComponentMetaConfig} = {}
 //   }
 // })
 
-const ymlObjs = [buttonObj, rootObj, pageObj]
+const ymlObjs = [buttonObj, imageObj, iconObj, inputObj, textObj,
+                rootObj, pageObj]
 for (let config of ymlObjs ) {
   ymls[config.group + "." + config.name] = config as ComponentMetaConfig
 }

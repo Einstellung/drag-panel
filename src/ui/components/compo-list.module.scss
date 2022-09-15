@@ -1,11 +1,14 @@
 .component-list {
-  // overflow-y: scroll;
+  overflow-y: scroll;
+  overflow-x: hidden;
   height: 100%;
   background: #ececec;
+  width: 182px;
 
   .component-list-group {
     background: white;
     margin-top: 10px;
+    width: 166px;
 
     h2 {
       margin: 0;

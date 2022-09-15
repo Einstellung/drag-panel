@@ -1,0 +1,10 @@
+group : basic
+name : input 
+componentType: react
+imageUrl : https://s1.ax1x.com/2022/09/14/vvJhlj.png
+title : 输入框 
+box:
+  width : 100
+  height : 24
+isContainer : false 
+url: local.Input

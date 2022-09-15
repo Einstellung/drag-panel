@@ -1,0 +1,9 @@
+group : basic
+name : "image"
+componentType: react
+imageUrl : https://s1.ax1x.com/2022/09/14/vvG7Je.png
+title : 图片
+box : 
+  width : 100
+  height : 100
+url : local.Image
