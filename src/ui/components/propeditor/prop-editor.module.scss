@@ -1,0 +1,49 @@
+.editor {
+  width: 304px;
+  height: 100%;
+  overflow-y: scroll;
+}
+
+.group {
+  h2 {
+    color: #666;
+    height: 28px;
+    line-height: 1.25;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: bold;
+    padding-right: 10px;
+    box-shadow: 1px 1px 1px #f2f2f2;
+    cursor: pointer;
+    svg {
+      fill: #d7d7d7
+    }
+  }
+
+  .row-labe {
+    letter-spacing: 2px;
+    font-size: 12px;
+    margin-bottom: 2px;
+    color: #666;
+  }
+  
+  .group-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 5px;
+    padding-bottom: 2px;
+
+    &.last {
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+  }
+}
+
+.size-input {
+  display : flex;
+  align-items: center;
+}

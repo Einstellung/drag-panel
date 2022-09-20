@@ -7,6 +7,7 @@ import { Topic } from "../Topic";
 import { MountPoint } from "./MountPoint";
 import { Map as ImmutableMap } from "immutable"
 import { CordNew } from "./Cord.new";
+import { PropMeta } from "../meta/PropMeta";
 
 export class Node extends Emiter<Topic> {
   meta: ComponentMeta
@@ -107,9 +108,9 @@ export class Node extends Emiter<Topic> {
     this.data.set("children", children)
   }
 
-  // setInstanceData(key: string, value: any) {
-  //   this.data = this.data.set(key, value)
-  // }
+  setInstanceData(key: string, value: any) {
+    this.data = this.data.set(key, value)
+  }
 
   // setAllowDrag(allowDrag: boolean) {
   //   this.setInstanceData("allowDrag", allowDrag)

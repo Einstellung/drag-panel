@@ -2,6 +2,7 @@ import { ComponentsLoader } from "../../loader";
 import { ComponentMeta, JsonPage, Node, Page, Rect, Topic } from "../../meta";
 import { StateMachine } from "../../utils";
 import { NodeSelector } from "./NodeSelector";
+import { PropertyEditor } from "./PropertyEditor";
 import { ResizerNew } from "./Resizer.new";
 import { SelectionNew } from "./SelectionNew";
 
@@ -40,6 +41,7 @@ export class UIModel extends StateMachine<UIStates, UIEvents, Topic> {
   root: Node
   /** 现在选择的节点 */
   selection: Node | null
+  propertyEditor: PropertyEditor
 
   constructor(json: JsonPage){
     super(UIStates.Start)
@@ -52,6 +54,7 @@ export class UIModel extends StateMachine<UIStates, UIEvents, Topic> {
     // this.selection = new SelectionNew()
     this.selection = null
     this.root = this.page.getRoot()
+    this.propertyEditor = new PropertyEditor(this) // this即实例化对象
   }
 
   // 处理拖拽新元素逻辑
@@ -116,6 +119,7 @@ export class UIModel extends StateMachine<UIStates, UIEvents, Topic> {
         console.log("[State Moved]")
         node.setXYByVec(vec)
         node.emit(Topic.NodeMoved) // 刷新节点更新node位置
+        this.emit(Topic.NodeMoved) // 提醒属性编辑器更新数据
     })
 
     this.register(UIStates.Moved, UIStates.Selected, UIEvents.AUTO, () => {

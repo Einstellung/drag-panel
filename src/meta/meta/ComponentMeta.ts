@@ -1,6 +1,34 @@
 import { BoxDescriptor } from "../BoxDescriptpr"
 import { BoxDescriptorInput, JsonNode } from "../standard.types"
 import { fromJS, Map as ImmutableMap } from "immutable"
+import { GroupMeta } from "./GroupMeta"
+import { PropMeta } from "./PropMeta"
+
+export interface PropConfig {
+  name : string,
+  props? : any, // 属性描述信息，如style, suffix等
+  type : string,
+  disabled? : boolean
+  default? : any
+  label? : string
+  selections ? : any
+  path : string, // 属性作用的位置，比如box.width
+  row ? : number, 
+  children? : Array<PropConfig>,
+  rowLabel? : string
+}
+
+export interface GroupConfig {
+  name: string,
+  title: string,
+  props?: Array<PropConfig>
+  disabled?: boolean,
+  style?: any, 
+}
+
+export interface PropsEditorConfigure {
+  groups?: Array<GroupConfig>
+}
 
 export interface ComponentMetaConfig {
   // 组件名称 
@@ -18,9 +46,8 @@ export interface ComponentMetaConfig {
   // 盒子模型
   box : BoxDescriptorInput,
 
-  // todo
   // 属性编辑器属性
-  // editor : PropsEditorConfigure,
+  editor : PropsEditorConfigure,
 
   // description : string,
 
@@ -46,10 +73,13 @@ export class ComponentMeta {
   imageUrl : string
   title : string
   box : BoxDescriptor
+  editor: PropsEditorConfigure
   intrinsic? :  boolean
   url? : string
   style? : any
   defaultProps: any
+  propertyGroups: Array<GroupMeta>
+  itemProps: {[name: string]: PropMeta} // propItem元数据
 
   constructor(config: ComponentMetaConfig) {
     this.name = config.name
@@ -62,6 +92,23 @@ export class ComponentMeta {
     this.defaultProps = config.defaultProps
     // !!初始化的时候似乎box不需要初始化
     this.box = new BoxDescriptor(config.box)
+    this.editor = config.editor
+    this.propertyGroups = []
+    this.itemProps = {}
+
+    // 把属性编辑器中的元数据通过实例对象方式赋予其他能力
+    if(config.editor && config.editor.groups) {
+      for (let group of config.editor.groups) {
+        this.propertyGroups.push(GroupMeta.of(group))
+        for (let prop of group.props || []) {
+          // 这里似乎有点问题！！！
+          if (prop.name && prop.path) {
+            this.itemProps[prop.name] = new PropMeta(prop)
+            console.log(this.itemProps)
+          }
+        }
+      }
+    }
   }
 
   /**

@@ -2,7 +2,11 @@ import { ComponentList } from "../components/ComponentList"
 import { NodeRender } from "../components/render/NodeRender"
 import { Panel } from "../components/render/Panel"
 import { useEditor } from "../hooks/useEditor"
+import { UIModel } from "../object/UIModel"
+import { Tabs } from "antd"
 import style from "./ui.module.scss"
+import 'antd/dist/antd.css'
+import { ComponentPropEditor } from "../components/propeditor/ComponentPropEditor"
 
 export const Editor = () => {
 
@@ -12,5 +16,25 @@ export const Editor = () => {
     <Panel editor={editor}>
       <NodeRender node={editor.getRoot()}/>
     </Panel>
+    <div className="right">
+      <RightTabs editor={editor}/>
+    </div>
   </div>
+}
+
+const RightTabs = ({editor}: {
+  editor: UIModel
+}) => {
+  return (
+    <Tabs defaultActiveKey="1" type="card" style={{
+      height: "100%"
+    }}>
+      <Tabs.TabPane tab="属性编辑" key="1">
+        <ComponentPropEditor editor={editor}/>
+      </Tabs.TabPane>
+      <Tabs.TabPane tab="页面结构" key="2">
+
+      </Tabs.TabPane>
+    </Tabs>
+  )
 }

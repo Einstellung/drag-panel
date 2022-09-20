@@ -88,7 +88,7 @@ function InnerRender({node, C}: {
 
   const [, setVer] = useState(0)
   // 数据发生变更时要触发重新渲染更新初始数据
-  useSubscribe([node, [Topic.NodeMoved, Topic.Resized]], () => {
+  useSubscribe([node, [Topic.NodeMoved, Topic.Resized, Topic.NodePropUpdated]], () => {
     setVer(x => x + 1)
   })
 
