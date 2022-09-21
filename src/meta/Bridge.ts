@@ -1,5 +1,6 @@
 import { Node } from "./instance/Node";
 import { UIComponentRenderOptions } from "./standard.types";
+import { Topic } from "./Topic";
 
 type BridgeNode = "editor" | "render"
 
@@ -23,5 +24,10 @@ export class Bridge {
 
   render(node: Node, options: UIComponentRenderOptions) {
     return this.renderForReact!(node, options)
+  }
+
+  setPropValue(path: string[], value: any) {
+    this.node.setPassPropValue(path, value)
+    this.node.emit(Topic.NodePropUpdated)
   }
 }

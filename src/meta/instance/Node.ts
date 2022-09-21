@@ -112,17 +112,28 @@ export class Node extends Emiter<Topic> {
     this.data = this.data.set(key, value)
   }
 
-  // setAllowDrag(allowDrag: boolean) {
-  //   this.setInstanceData("allowDrag", allowDrag)
-  // }
+  setPassPropValue(path: string[], value: any) {
+    const passProps = this.getPassProps().setIn(path, value)
+    this.setInstanceData("passProps", passProps)
+  }
+
+  setAllowDrag(allowDrag: boolean) {
+    this.setInstanceData("allowDrag", allowDrag)
+  }
 
   setMount(ele: HTMLElement, cord: CordNew) {
     this.mountPoint = new MountPoint(ele, this, cord)
   }
 
-  // updateInstanceData(key: string, updator: (value:any) => void) {
-  //   this.data = this.data.updateIn([key], updator)
-  // }
+  updateInstanceData(key: string, updator: (value: any) => void) {
+    this.data = this.data.updateIn([key], updator)
+  }
+
+  /** 根据path更新实例数据 */
+  updateInstanceByPath(path: string[], value: any) {
+    this.data = PropMeta.setPropValue(path, this.data, value)
+    this.emit(Topic.NodePropUpdated)
+  }
 
   /** 
    * 将当前节点相对挂载点的位置添加进当前节点

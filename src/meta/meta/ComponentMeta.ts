@@ -90,7 +90,6 @@ export class ComponentMeta {
     this.url = config.url
     this.style = config.style
     this.defaultProps = config.defaultProps
-    // !!初始化的时候似乎box不需要初始化
     this.box = new BoxDescriptor(config.box)
     this.editor = config.editor
     this.propertyGroups = []
@@ -104,7 +103,6 @@ export class ComponentMeta {
           // 这里似乎有点问题！！！
           if (prop.name && prop.path) {
             this.itemProps[prop.name] = new PropMeta(prop)
-            console.log(this.itemProps)
           }
         }
       }
@@ -129,6 +127,14 @@ export class ComponentMeta {
       passProps: fromJS(this.defaultProps || {}),
       box
     })
+
+    // 将itemProps中有default的passProps添加到data的passProps中
+    for(let key in this.itemProps) {
+      const prop = this.itemProps[key]
+      if(prop.config.default !== undefined) {
+        data = PropMeta.setPropValue(prop.path, data, prop.config.default)
+      }
+    }
 
     return data
   }
