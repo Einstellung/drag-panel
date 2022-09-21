@@ -1,5 +1,6 @@
-import { MouseEventHandler, useContext } from "react"
-import { Node } from "../../../meta"
+import { MouseEventHandler, useContext, useState } from "react"
+import { Node, Topic } from "../../../meta"
+import { useSubscribe } from "../../hooks/useSubscribe"
 import { ResizerNew } from "../../object/Resizer.new"
 import { UIEvents } from "../../object/UIModel"
 import { RenderContext } from "../render/RenderContext"
@@ -21,6 +22,18 @@ export const Selectable = ({
 
   const context = useContext(RenderContext)
 
+  // 是否选中来看是否渲染外围选择框和resize
+  function isSelected() {
+    return context.editor?.selection === node
+  }
+  const selectedValue = isSelected()
+
+  // selection变更要触发组件重新渲染，更新外围选择框
+  const [,setVer] = useState(0)
+  useSubscribe([context.editor!, Topic.SelectionChanged], () => {
+    setVer(x => x + 1)
+  })
+
   return (
     <div
       // 这里样式还需要调整
@@ -35,28 +48,30 @@ export const Selectable = ({
         onSelectChanged(false)
       }}
     >
-      <div className={styles.selection_frame}>
-        {children}
-        {node.isDraggable() &&
-          ResizerNew.resizerData.map(([name, type]) => {
-            return (
-              <div
-                key={name + ""}
-                data-cube={type}
-                className={`${styles.cube} ${styles["cube_" + name]}`}
-                onMouseDown={e => {
-                  e.stopPropagation()
-                  context.editor!.dispatch(UIEvents.EvtStartResize,
-                    type,
-                    [e.clientX, e.clientY],
-                    node)
-                }}
-              >
-              </div>
-            )
-          })
-        }
-      </div>
+      {/* 这个div只是渲染外围选择框 */}
+      <div className={styles.selection_frame}
+        style={{display: selectedValue ? "block" : "none"}}
+      />
+      {children}
+      {selectedValue && node.isDraggable() &&
+        ResizerNew.resizerData.map(([name, type]) => {
+          return (
+            <div
+              key={name + ""}
+              data-cube={type}
+              className={`${styles.cube} ${styles["cube_" + name]}`}
+              onMouseDown={e => {
+                e.stopPropagation()
+                context.editor!.dispatch(UIEvents.EvtStartResize,
+                  type,
+                  [e.clientX, e.clientY],
+                  node)
+              }}
+            >
+            </div>
+          )
+        })
+      }
     </div>
   )
 }
