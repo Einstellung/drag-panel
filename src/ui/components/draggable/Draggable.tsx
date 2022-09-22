@@ -6,7 +6,8 @@ import { useDragNode } from "./useDragNode"
 type DraggableProps = {
   initialPosition: [string, string],
   children: JSX.Element,
-  dragEnable: boolean
+  dragEnable: boolean,
+  style?: any
 } & DragEvents
 
 export const Draggable = (props: DraggableProps) => {
@@ -17,6 +18,7 @@ export const Draggable = (props: DraggableProps) => {
     position: "absolute",
     left: props.initialPosition[0],
     top: props.initialPosition[1],
+    ...props.style
   }
 
   if(props.dragEnable) {

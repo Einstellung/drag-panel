@@ -36,5 +36,13 @@ export class Rect {
     return this.boundX(x) && this.boundY(y)
   }
 
+  centerX() {
+    return this.left + this.width / 2
+  }
+
+  centerY() {
+    return this.top + this.height / 2
+  }
+
   static ZERO = new Rect(0, 0, 0, 0)
 }

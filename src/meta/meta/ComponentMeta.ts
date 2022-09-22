@@ -120,7 +120,7 @@ export class ComponentMeta {
       parent: null,
       name: this.name,
       group: this.group,
-      style: fromJS(this.style) as ImmutableMap<string, any>,
+      style: fromJS(this.style || {}) as ImmutableMap<string, any>,
       children: [],
       allowDrag: true,
       isMoving: false,
@@ -135,6 +135,12 @@ export class ComponentMeta {
         data = PropMeta.setPropValue(prop.path, data, prop.config.default)
       }
     }
+
+    // default的style会把data中的style覆盖，所有需要再赋值一遍重新覆盖
+    data = data.update("style", (style: any) => {
+      const metaStyle = fromJS(this.style) as ImmutableMap<string, any>
+      return style.merge(metaStyle)
+    })
 
     return data
   }

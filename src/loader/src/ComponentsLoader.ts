@@ -9,6 +9,7 @@ import inputObj from "../yml/input.yml"
 import textObj from "../yml/text.yml"
 import rootObj from "../yml/root.yml"
 import pageObj from "../yml/page.yml"
+import divObj from "../yml/div.yml"
 import { deepMerge } from "./deepMerge";
 import { Validator } from "jsonschema"
 import { load } from "js-yaml";
@@ -30,6 +31,7 @@ const ymls: {[key: string]: ComponentMetaConfig} = {}
 // })
 
 const ymlObjs = [buttonObj, imageObj, iconObj, inputObj, textObj,
+                divObj,
                 rootObj, pageObj]
 for (let config of ymlObjs ) {
   ymls[config.group + "." + config.name] = config as ComponentMetaConfig
