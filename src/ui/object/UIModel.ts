@@ -1,6 +1,7 @@
 import { ComponentsLoader } from "../../loader";
 import { ComponentMeta, JsonPage, Node, Page, Rect, Topic } from "../../meta";
 import { StateMachine } from "../../utils";
+import { AssistLine } from "./AssistLine";
 import { NodeSelector } from "./NodeSelector";
 import { PropertyEditor } from "./PropertyEditor";
 import { ResizerNew } from "./Resizer.new";
@@ -42,6 +43,7 @@ export class UIModel extends StateMachine<UIStates, UIEvents, Topic> {
   /** 现在选择的节点 */
   selection: Node | null
   propertyEditor: PropertyEditor
+  private assistLine: AssistLine
 
   constructor(json: JsonPage){
     super(UIStates.Start)
@@ -55,6 +57,7 @@ export class UIModel extends StateMachine<UIStates, UIEvents, Topic> {
     this.selection = null
     this.root = this.page.getRoot()
     this.propertyEditor = new PropertyEditor(this) // this即实例化对象
+    this.assistLine = new AssistLine()
   }
 
   // 处理拖拽新元素逻辑
@@ -108,9 +111,18 @@ export class UIModel extends StateMachine<UIStates, UIEvents, Topic> {
 
   // 处理拖拽的逻辑
   private describeDragMove() {
+
+    const handlerSyncMoving = (node: Node) => {
+      const absRect = node.absMountPointRect()
+      // 对齐线
+      const lines = this.assistLine.calculateLines(absRect, node)
+      // this.emit(Topic.AssistLinesChanged, {lines: lines, show: true})
+    }
+
     this.register([UIStates.Selected, UIStates.Moving], UIStates.Moving, UIEvents.EvtNodeSyncMoving, 
       (node: Node, vec: [number, number]) => {
         // todo!!(Flex)
+        handlerSyncMoving(node)
         console.log("[State Moving]")
     })
 

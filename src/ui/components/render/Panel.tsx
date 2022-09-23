@@ -1,7 +1,9 @@
 import { useContext, useEffect, useState } from "react"
 import { Rect, Topic } from "../../../meta"
 import { useBound } from "../../hooks/useBound"
+import { useSubscribe } from "../../hooks/useSubscribe"
 import { UIEvents, UIModel } from "../../object/UIModel"
+import { AssistLineProps, AssistLineSVG } from "../assistline/AssistLineSVG"
 import style from "./render.module.scss"
 import { RenderContext } from "./RenderContext"
 // import { Shadow } from "./Shadow"
@@ -18,12 +20,19 @@ export const Panel = ({children, editor}: {
   // 或许是ref得到的结果是看是第一个relative定位的，在包裹的HTML里面，第一个relative定位的结果会是0
   // 总之通过这种方式得到的rect始终是[left, top]=0
   const [rect, ref] = useBound()
-
   useEffect(() => {
     if(rect !== Rect.ZERO) {
       renderContext.cord.setViewPort(rect)
     }
   }, [rect])
+
+  const [assistState, setAssistState] = useState<AssistLineProps>({
+    lines: [],
+    show: false
+  })
+  useSubscribe([editor, Topic.AssistLinesChanged], (assistState) => {
+    setAssistState(assistState)
+  })
 
   return (
     <RenderContext.Provider value={renderContext}>
@@ -57,6 +66,7 @@ export const Panel = ({children, editor}: {
       >
         {/* <Shadow regionPosition={regionPosition}/> */}
         {children}
+        <AssistLineSVG lines={assistState.lines} show={assistState.show} />
       </div>
     </RenderContext.Provider>
   )
