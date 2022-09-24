@@ -16,17 +16,23 @@ function render(type: string, props: any, key: any) {
     case "name":
       return <StringInput />
     case "integer":
-      return <Integer />
+      return <Integer key={key} {...props}/>
     case "color":
       return <ColorPicker
                key={key}
                />
     case "select":
       return (
-        <h1>这是select</h1>
-        // <Select>
-        //   <h2>Selct Option</h2>
-        // </Select>
+        <Select
+          key={key}
+          disabled={props.disabled}
+          defaultValue={props.propValue}
+          onChange={value => props.onChange(value)}
+        >
+          {props.metaProps.selections.map((item: any) => {
+            return <Select.Option key={item.value} value={item.value}>{item.text}</Select.Option>
+          })}
+        </Select>
       )
     case "font-family":
       return (

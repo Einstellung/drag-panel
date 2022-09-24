@@ -44,6 +44,7 @@ export class PropItem extends Emiter<Topic> {
   /** 更新实例节点元数据信息 */
   set(value: any) {
     this.node.updateInstanceByPath(this.meta.path, value)
+    this.itemValue = PropMeta.getPropValue(this.meta.path, this.node.getData())
     this.emit(Topic.PropertyChanged)
   }
 }
