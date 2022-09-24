@@ -11,10 +11,15 @@ import { StringInput } from "./StringInput"
 function render(type: string, props: any, key: any) {
   
   switch(type) {
+    case "list":
+      console.log("list props", props)
+      return
     case "size":
       return <SizeInput key={key} {...props}/>
+    // 在codeless中使用
     case "name":
       return <StringInput />
+    // 比如边框等输入框
     case "integer":
       return <Integer key={key} {...props}/>
     case "color":
@@ -40,7 +45,11 @@ function render(type: string, props: any, key: any) {
     case "font-family":
       return (
         <Select
-          defaultValue={"Microsoft Yahei"}
+          key={key}
+          disabled={props.disabled}
+          {...props.metaProps}
+          onChange={(value) => props.onChange(value)}
+          defaultValue={props.propValue}
         >
           <Select.Option value="Microsoft YaHei">微软雅黑</Select.Option>
           <Select.Option value="宋体">宋体</Select.Option>

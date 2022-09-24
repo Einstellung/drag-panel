@@ -80,12 +80,15 @@ export class UIModel extends StateMachine<UIStates, UIEvents, Topic> {
       const worldPosition = this.dropComponentPosition
       console.log("[UIModel worldPosition]", worldPosition)
       const node = this.page.createFromMetaNew(this.dropComponentMeta!)
+      // receiver始终对应的是容器节点
       const receiver = NodeSelector.selectForDrop(this.root, worldPosition, null)
 
       receiver?.addToAbsolute(node, worldPosition)
       this.dropComponentMeta = null
       receiver?.emit(Topic.NewNodeAdded)
       this.selection = node
+      // 触发属性编辑器页面结构面板更新
+      this.emit(Topic.NewNodeAdded)
     })
 
     this.register(UIStates.Added, UIStates.Selected, UIEvents.AUTO, () => {

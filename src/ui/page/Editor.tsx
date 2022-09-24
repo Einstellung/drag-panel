@@ -7,6 +7,7 @@ import { Tabs } from "antd"
 import style from "./ui.module.scss"
 import 'antd/dist/antd.css'
 import { ComponentPropEditor } from "../components/propeditor/ComponentPropEditor"
+import { PageStructure } from "../components/PageStructure"
 
 export const Editor = () => {
 
@@ -16,7 +17,7 @@ export const Editor = () => {
     <Panel editor={editor}>
       <NodeRender node={editor.getRoot()}/>
     </Panel>
-    <div className="right">
+    <div className={style.right}>
       <RightTabs editor={editor}/>
     </div>
   </div>
@@ -33,7 +34,7 @@ const RightTabs = ({editor}: {
         <ComponentPropEditor editor={editor}/>
       </Tabs.TabPane>
       <Tabs.TabPane tab="页面结构" key="2">
-
+        <PageStructure editor={editor}/>
       </Tabs.TabPane>
     </Tabs>
   )
