@@ -20,6 +20,9 @@ function render(type: string, props: any, key: any) {
     case "color":
       return <ColorPicker
                key={key}
+               disabled={props.disabled}
+               defaultValue={props.propValue}
+               onChange={(value: any) => props.onChange(value)}
                />
     case "select":
       return (
