@@ -124,7 +124,7 @@ export class ComponentMeta {
       children: [],
       allowDrag: true,
       isMoving: false,
-      passProps: fromJS(this.defaultProps || {}),
+      passProps: fromJS(this.defaultProps || {}), // 原始信息，以及属性编辑器中通过path来确定传递给组件的数据
       box
     })
 

@@ -8,19 +8,26 @@ import style from "./ui.module.scss"
 import 'antd/dist/antd.css'
 import { ComponentPropEditor } from "../components/propeditor/ComponentPropEditor"
 import { PageStructure } from "../components/PageStructure"
+import { Fragment } from "react"
+import { TitleBar } from "../components/frame/TitleBar"
 
 export const Editor = () => {
 
   const editor = useEditor()
-  return <div className={style.container}>
-    <ComponentList editor={editor}/>
-    <Panel editor={editor}>
-      <NodeRender node={editor.getRoot()}/>
-    </Panel>
-    <div className={style.right}>
-      <RightTabs editor={editor}/>
-    </div>
-  </div>
+  return (
+    <Fragment>
+      <TitleBar />
+      <div className={style.container}>
+        <ComponentList editor={editor} />
+        <Panel editor={editor}>
+          <NodeRender node={editor.getRoot()} />
+        </Panel>
+        <div className={style.right}>
+          <RightTabs editor={editor} />
+        </div>
+      </div>
+    </Fragment>
+  )
 }
 
 const RightTabs = ({editor}: {
