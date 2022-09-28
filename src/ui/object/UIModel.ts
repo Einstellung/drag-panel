@@ -5,7 +5,7 @@ import { AssistLine } from "./AssistLine";
 import { NodeSelector } from "./NodeSelector";
 import { PropertyEditor } from "./PropertyEditor";
 import { ResizerNew } from "./Resizer.new";
-import { SelectionNew } from "./SelectionNew";
+import md5 from "md5"
 
 export enum UIStates{
   Start,
@@ -44,6 +44,7 @@ export class UIModel extends StateMachine<UIStates, UIEvents, Topic> {
   selection: Node | null
   propertyEditor: PropertyEditor
   private assistLine: AssistLine
+  private contentHash: string // 页面结构生成json的hash值
 
   constructor(json: JsonPage){
     super(UIStates.Start)
@@ -58,6 +59,7 @@ export class UIModel extends StateMachine<UIStates, UIEvents, Topic> {
     this.root = this.page.getRoot()
     this.propertyEditor = new PropertyEditor(this) // this即实例化对象
     this.assistLine = new AssistLine()
+    this.contentHash = md5(JSON.stringify(json))
   }
 
   // 处理拖拽新元素逻辑
@@ -196,5 +198,18 @@ export class UIModel extends StateMachine<UIStates, UIEvents, Topic> {
 
   public getRoot() {
     return this.root
+  }
+
+  // 先不做服务端上传，只将数据保存到浏览器缓存中
+  public save() {
+    const json = this.page.pageNode.toJSON()
+    const text = JSON.stringify({page: json})
+
+    const contentHash = md5(text)
+    if(contentHash === this.contentHash) {
+      return
+    }
+    this.contentHash = contentHash
+    sessionStorage.setItem("DragModel", text)
   }
 }

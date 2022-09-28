@@ -144,4 +144,12 @@ export class ComponentMeta {
 
     return data
   }
+
+  createDataFromJson(json: JsonNode) {
+    const box = new BoxDescriptor(json.box, this)
+    return fromJS({
+      ...json,
+      box
+    }) as ImmutableMap<string, any>
+  }
 }

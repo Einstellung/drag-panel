@@ -2,7 +2,7 @@ import { Emiter } from "../../utils";
 import { Rect } from "./Rect";
 import { BoxDescriptor } from "../BoxDescriptpr";
 import { ComponentMeta } from "../meta/ComponentMeta";
-import { NodeData } from "../standard.types";
+import { JsonNode, NodeData, NodeInstanceJsonStructure } from "../standard.types";
 import { Topic } from "../Topic";
 import { MountPoint } from "./MountPoint";
 import { Map as ImmutableMap } from "immutable"
@@ -53,26 +53,38 @@ export class Node extends Emiter<Topic> {
     return this.data.get("style").toJS()
   }
 
-  // isContainer() {
-  //   return this.getBox().container
-  // }
+  isDraggable() {
+    const name = this.getName()
+    return this.getBox().movable && name !== "root" && name !== "page"
+  }
 
-  // getMountPointRect(): Rect {
-  //   if (!this.mountPoint) {
-  //     return Rect.ZERO
-  //   }
-  //   return this.mountPoint.getDiffRect()
-  // }
+  isContainer() {
+    return this.getBox().container
+  }
 
-  // getMountPoint() {
-  //   return this.mountPoint
-  // }
+  getMountPointRect(): Rect {
+    if (!this.mountPoint) {
+      return Rect.ZERO
+    }
+    return this.mountPoint.getDiffRect()
+  }
 
-  // /** todo!! */
-  // getChildren() {
-  //   const children: Array<Node> = this.data.get("children").concat()
-  //   return children
-  // }
+  getMountPoint() {
+    return this.mountPoint
+  }
+
+  /** 待注释,供bridge使用 */
+  getChildren() {
+    const children: Array<Node> = this.data.get("children").concat()
+    const box = this.getBox()
+    if(box.display === "flex" && box.flexDirection === "row") {
+      children.sort((a, b) => a.absMountPointRect().left - b.absMountPointRect().left)
+    }
+    if(box.display === "flex" && box.flexDirection === "column") {
+      children.sort((a, b) => a.absMountPointRect().top - b.absMountPointRect().top)
+    }
+    return children
+  }
 
   setParent(node: Node | null) {
     if (node !== null) this.level = node.level + 1
@@ -104,8 +116,12 @@ export class Node extends Emiter<Topic> {
     this.setXY(x + vec[0], y + vec[1])
   }
 
+  /** 需要写成setInstance而不能是直接set，难道是通过赋值的办法重新更新一下数据？
+   * 将来要好好学一下Immutable，直接写set会赋值出错，得到的不是node实例数据而是NodeData原始数据
+   */
   setChildren(children: Array<Node>) {
-    this.data.set("children", children)
+    // this.data.set("children", children)
+    this.setInstanceData("children", children)
   }
 
   setInstanceData(key: string, value: any) {
@@ -136,7 +152,8 @@ export class Node extends Emiter<Topic> {
   }
 
   /** 
-   * 将当前节点相对挂载点的位置添加进当前节点
+   * 将当前节点相对挂载点的位置添加进当前节点;
+   * 将传入的node节点挂载父节点
    * @param position 当前节点的[worldX, worldY]
    */
   addToAbsolute(node: Node, position?: [number, number]) {
@@ -150,24 +167,24 @@ export class Node extends Emiter<Topic> {
     this.addSortChildren(node)
   }
 
-  // addToRelative(node: Node, position?: [number, number]) {
-  //   if(!position) {
-  //     position = [node.getBox().left.toNumber(), node.getBox().top.toNumber()]
-  //   }
+  addToRelative(node: Node, position?: [number, number]) {
+    if (!position) {
+      position = [node.getBox().left.toNumber(), node.getBox().top.toNumber()]
+    }
 
-  //   this.addParent(node)
-  //   node.setXY(...position)
-  //   this.addSortChildren(node)
-  // }
+    this.addParent(node)
+    node.setXY(...position)
+    this.addSortChildren(node)
+  }
 
-  // /** 对子元素按规则排序并添加到节点中 */
-  // private addSortChildren(node: Node) {
-  //   this.updateInstanceData("children", (_children) => {
-  //     let children = _children as Array<Node>
-  //     children = children.concat(node)
-  //     return children
-  //   })
-  // }
+  /** 对子元素按规则排序并添加到节点中 */
+  addSortChildren(node: Node) {
+    this.updateInstanceData("children", (_children) => {
+      let children = _children as Array<Node>
+      children = children.concat(node)
+      return children
+    })
+  }
 
   /**
    * 将node节点的父节点指向this节点
@@ -230,5 +247,13 @@ export class Node extends Emiter<Topic> {
       return true
     }
     return this.getMountPointRect().bound(x, y)
+  }
+
+  toJSON() {
+    const data = this.getData().remove("parent")
+    const json: Partial<NodeInstanceJsonStructure> = data.toJS()
+    const newJson = {...json, box: json.box?.toJSON()}
+    newJson.children = this.getChildren().map(child => child.toJSON())
+    return newJson as JsonNode
   }
 }

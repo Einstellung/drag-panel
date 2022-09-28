@@ -68,6 +68,7 @@ function renderProps(prop: PropItem, disabled: boolean, key: any) {
     onChange: (v: any) => {
       prop.set(v)
     },
+    // children表示有嵌套，可以继续递归的渲染
     children: prop.meta.config.children,
     metaProps: prop.meta.config.props,
     propValue: prop.itemValue

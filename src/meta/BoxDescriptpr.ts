@@ -67,73 +67,73 @@ export class SizeUnit{
 		this.parent = parent
 	}
 	
-	// public set(val : number) {
-	// 	if(this.mode === 'fixed') {
-	// 		return
-	// 	}
-	// 	if(this.unit === 'px') {
-	// 		this.value = val
-	// 	}
-	// 	else if(this.unit === '%') {
-	// 		const prect = this.getPrect() 
-	// 		const parentWidth = prect.width
-	// 		const parentHeight = prect.height
-	// 		if(['marginTop', 'marginBottom', 'top', 'height'].indexOf(this.key) !== -1) {
-	// 			this.value = 100 * val / parentHeight
-	// 		} else {
-	// 			this.value = 100 * val / parentWidth
-	// 		}
-	// 	}
-	// }
+	public set(val : number) {
+		if(this.mode === 'fixed') {
+			return
+		}
+		if(this.unit === 'px') {
+			this.value = val
+		}
+		else if(this.unit === '%') {
+			const prect = this.getPrect() 
+			const parentWidth = prect.width
+			const parentHeight = prect.height
+			if(['marginTop', 'marginBottom', 'top', 'height'].indexOf(this.key) !== -1) {
+				this.value = 100 * val / parentHeight
+			} else {
+				this.value = 100 * val / parentWidth
+			}
+		}
+	}
 
 
-	// private getMax(rect : Rect) {
-	// 	if (
-	// 		[
-	// 			"marginTop",
-	// 			"marginBottom",
-	// 			"top",
-	// 			"height",
-	// 		].indexOf(this.key) !== -1
-	// 	) {
-	// 		return rect.height
-	// 	} else {
-	// 		return rect.width
-	// 	}
-	// }
+	private getMax(rect : Rect) {
+		if (
+			[
+				"marginTop",
+				"marginBottom",
+				"top",
+				"height",
+			].indexOf(this.key) !== -1
+		) {
+			return rect.height
+		} else {
+			return rect.width
+		}
+	}
 
-	// public toPxNumberWithRect(rect : Rect) {
+	public toPxNumberWithRect(rect : Rect) {
 
-	// 	const realtiveMax = this.getMax(rect)
-	// 	if(this.mode === 'fill') {
-	// 		return realtiveMax
-	// 	}
+		const realtiveMax = this.getMax(rect)
+		if(this.mode === 'fill') {
+			return realtiveMax
+		}
 
-	// 	if (this.unit === "px") {
-	// 		return this.value 
-	// 	} else if (this.unit === "%") {
-	// 		return realtiveMax * this.value / 100
-	// 	}
+		if (this.unit === "px") {
+			return this.value 
+		} else if (this.unit === "%") {
+			return realtiveMax * this.value / 100
+		}
 
-	// 	throw new Error("invalid sizeunit.")	
-	// }
+		throw new Error("invalid sizeunit.")	
+	}
 
-	// private getPrect(node? : Node){
-	// 	const parent = node?.getParent()
-	// 	const prect = parent ? parent.getRect() : node?.getRect()
-	// 	return prect || Rect.ZERO
-	// }
+	private getPrect(node? : Node){
+		const parent = node?.getParent()
+		const prect = parent ? parent.getMountPointRect() : node?.getMountPointRect()
+		return prect || Rect.ZERO
+	}
 
-	// public toPxNumber(node : Node){
+	public toPxNumber(node : Node){
  
-	// 	const prect = this.getPrect()
-	// 	return this.toPxNumberWithRect(prect || Rect.ZERO)
+		const prect = this.getPrect()
+		return this.toPxNumberWithRect(prect || Rect.ZERO)
 		
-	// }
+	}
 
-	// public toNumber(){
-	// 	return this.toPxNumber(this.parent?.node)
-	// }
+	public toNumber(){
+		return this.toPxNumber(this.parent?.node)
+	}
 
 	public getKey(){
 		return this.key
@@ -288,4 +288,24 @@ export class BoxDescriptor {
 
     return box
   }
+
+	toJSON(): BoxDescriptorInput {
+		return {
+			left : this.left.toJSON(), 
+			top : this.top.toJSON(), 
+			width : this.width.toJSON(),
+			height : this.height.toJSON(),
+			marginLeft : this.marginLeft.toJSON(), 
+			marginTop : this.marginTop.toJSON(), 
+			marginBottom : this.marginBottom.toJSON(), 
+			marginRight : this.marginRight.toJSON() ,
+			resizable: this.resizable,
+			position :this.position,
+			flexDirection : this.flexDirection,
+			movable : this.movable,
+			container : this.container,
+			display : this.display,
+			selectable : this.selectable
+		}
+	}
 }

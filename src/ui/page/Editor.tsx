@@ -8,12 +8,19 @@ import style from "./ui.module.scss"
 import 'antd/dist/antd.css'
 import { ComponentPropEditor } from "../components/propeditor/ComponentPropEditor"
 import { PageStructure } from "../components/PageStructure"
-import { Fragment } from "react"
+import { Fragment, useEffect } from "react"
 import { TitleBar } from "../components/frame/TitleBar"
 
 export const Editor = () => {
 
   const editor = useEditor()
+
+  useEffect(() => {
+    setInterval(() => {
+      editor.save()
+    }, 2000)
+  }, [])
+
   return (
     <Fragment>
       <TitleBar />

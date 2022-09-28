@@ -1,7 +1,23 @@
+import { CordNew, Rect } from "../../meta"
+import { usePage, NodeRender, RenderContext } from "../../render"
+import { TitleBar } from "../components/frame/TitleBar"
+import classes from "./ui.module.scss"
+
 export const Preview = () => {
+
+  const page = usePage()
+  if(!page) return null
+
   return (
     <div>
-      <h1>Preview</h1>
+      <TitleBar />
+      <div className={classes['preview-container']}>
+        <RenderContext.Provider value={{
+          cord: new CordNew(Rect.ZERO)
+        }}>
+          <NodeRender node={page.getRoot()}/>
+        </RenderContext.Provider>
+      </div>
     </div>
   )
 }

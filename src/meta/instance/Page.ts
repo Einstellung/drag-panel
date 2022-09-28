@@ -10,7 +10,7 @@ export class Page extends Emiter<Topic> {
   private id_base: number
   private loader: ComponentsLoader
   private root: NodeType
-  private pageNode: NodeType
+  pageNode: NodeType
 
   constructor(json: JsonPage, loader: ComponentsLoader) {
     super()
@@ -40,6 +40,43 @@ export class Page extends Emiter<Topic> {
     return this.id_base++
   }
 
+  /**
+   * 通过json创建完整的渲染树
+   * @param json 
+   */
+  private fromJson(json: JsonNode) {
+
+    const meta = this.loader.loadByName(json.group, json.name)
+    const box = new BoxDescriptor(json.box, meta)
+
+    const id = json.id || this.createId()
+    let node: Node
+
+    // 有json.id表示是preview渲染，要从json中创建node
+    if(json.id) {
+      const instanceData = meta.createDataFromJson(json)
+      node = new Node(meta, instanceData)
+
+      if(json.children) {
+        const childNode = json.children.map(child => {
+          const childNode = this.fromJson(child)
+          return childNode
+        })
+        node.setChildren(childNode)
+      }
+
+    } else {
+      const instanceData = meta.createData(id, box)
+      node = new Node(meta, instanceData as NodeData)
+    }
+
+    return node
+  }
+
+  /**
+   * 根据meta数据创建实例节点node
+   * @param meta
+   */
   createFromMetaNew(meta: ComponentMeta) {
     const box = meta.box.clone()
     const id = this.createId()
