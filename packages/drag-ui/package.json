@@ -1,0 +1,42 @@
+{
+  "name": "drag-ui",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@ant-design/icons": "^4.7.0",
+    "@drag/loader": "workspace:^1.0.0",
+    "@drag/meta": "workspace:^1.0.0",
+    "@drag/utils": "workspace:^1.0.0",
+    "@types/md5": "^2.3.2",
+    "@types/node": "^18.7.13",
+    "@types/react-color": "^3.0.6",
+    "antd": "4.22",
+    "immutable": "^4.1.0",
+    "invariant": "^2.2.4",
+    "md5": "^2.3.0",
+    "ramda": "^0.28.0",
+    "react": "^18.2.0",
+    "react-color": "^2.19.3",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.4.1",
+    "rxjs": "^7.5.6",
+    "sass": "^1.54.5",
+    "vite-plugin-yaml2": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/invariant": "^2.2.35",
+    "@types/ramda": "^0.28.15",
+    "@types/react": "^18.0.17",
+    "@types/react-dom": "^18.0.6",
+    "@vitejs/plugin-react": "^2.0.1",
+    "typescript": "^4.6.4",
+    "vite": "^3.0.7",
+    "vite-node": "^0.22.1"
+  }
+}
