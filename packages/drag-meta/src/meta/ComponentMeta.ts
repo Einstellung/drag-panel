@@ -62,9 +62,13 @@ export interface ComponentMetaConfig {
   // 传递给组件的初始属性
   defaultProps : any,
 
-  // external
-  // todo
-  url?: string
+  /** External component */
+  componentType: "react" | "vue",
+  sourceFileSrc: string, // source file location, 如.\src\Swiper.tsx
+  buildFileSrc: string, // 打包编译好的文件位置，用于做打包校验
+  url?: string, // 用于区分是内部还是外部组件如local.button
+  yml: string,
+  version: string
 }
 
 export class ComponentMeta {

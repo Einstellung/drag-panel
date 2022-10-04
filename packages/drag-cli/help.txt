@@ -1,0 +1,5 @@
+Use this cli to upload component for Drag Panel!
+Usage: xx <command> [options]
+
+Commands: 
+  xx publish --yml [yml-file] publish component
