@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { ProjectEditor } from './code-editor/ProjectEditor'
 import { Editor } from './ui/page/Editor'
 import { Preview } from './ui/page/Preview'
 
@@ -13,6 +14,10 @@ function App() {
     {
       path: "/preview/",
       element: <Preview />
+    },
+    {
+      path: "/editor/",
+      element: <ProjectEditor />
     }
   ])
 
