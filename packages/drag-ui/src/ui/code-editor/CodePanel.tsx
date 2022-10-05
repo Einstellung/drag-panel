@@ -1,8 +1,8 @@
 import Editor from "@monaco-editor/react"
 import { useContext } from "react"
-import { Topic } from "@drag/utils"
+import { CodeTopic } from "./codeTopic"
 import classes from "./code.module.scss"
-import { EditorContext } from "./ProjectEditor"
+import { EditorContext } from "../page/CodeEditor"
 
 const extToLang = {
   "ts" : "typescript",
@@ -10,20 +10,19 @@ const extToLang = {
 }
 
 export type fileType = "ts" | "json"
-export const CodeEditor = ({fileType, fileContent}: {
+export const CodePanel = ({fileType, fileContent}: {
   fileType: fileType,
   fileContent: string
 }) => {
   const editor = useContext(EditorContext)!
   return (
-    <div className={classes['code-editor']}>
+    <div className={classes['code-panel']}>
       <Editor 
       language={extToLang[fileType || "typescript"]}
       value={fileContent}
       theme="vs-dark"
       onChange={changeContent => {
-        // todo!!
-        // editor.emit(Topic.fileChanged, changeContent)
+        editor.emit(CodeTopic.fileChanged, changeContent)
       }}
       options={{
         fontSize: 28

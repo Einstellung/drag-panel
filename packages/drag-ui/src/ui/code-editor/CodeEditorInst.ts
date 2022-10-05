@@ -1,7 +1,8 @@
 import axios from "axios";
 import { CodeProject, FileTreeNode, PorjectJSON } from "@drag/code-model";
-import { debounce, Emiter, Topic } from "@drag/utils";
+import { debounce, Emiter } from "@drag/utils";
 import { updateContent } from "./CodeProjectRepo";
+import { CodeTopic } from "./codeTopic"
 
 function first<T>(it: Iterator<T>): T | null {
   let next = it.next()
@@ -11,7 +12,7 @@ function first<T>(it: Iterator<T>): T | null {
   return null
 }
 
-export class ProjectEditorInst extends Emiter<1>{
+export class CodeEditorInst extends Emiter<CodeTopic>{
   private project: CodeProject
 
   constructor(projectName: string) {
@@ -62,8 +63,7 @@ export class ProjectEditorInst extends Emiter<1>{
         })
     }))
 
-    // todo!!
-    // this.emit(Topic.Loaded)
+    this.emit(CodeTopic.Loaded)
   }
 }
 

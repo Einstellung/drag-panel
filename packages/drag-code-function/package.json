@@ -11,6 +11,6 @@
   "dependencies": {
     "@drag/code-model": "workspace:^1.0.0",
     "axios": "^1.0.0",
-    "node-fetch": "^3.2.10"
+    "node-fetch": "2.6.6"
   }
 }

@@ -1,9 +1,9 @@
-.editor-dir, .editor-file {
+.explorer-dir, .explorer-file {
   line-height: 30px;
   padding-left: 10px;
 }
 
-.code-editor {
+.code-panel {
   width: 100%;
   height: 100%;
 }
@@ -15,7 +15,7 @@
   color: white;
 }
 
-.project-editor {
+.code-editor {
   width: 100%;
   height: 100%;
   display: flex;

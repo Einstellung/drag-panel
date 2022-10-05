@@ -1,2 +1,2 @@
-export * from "./serviceUpload"
+// export * from "./serviceUpload"
 export * from "./serviceDoc"
