@@ -1,6 +1,5 @@
 import axios from "axios";
 import { CodeProject } from "@drag/code-model";
-// import { uploadOSS } from "../code-server";
 
 export async function updateContent(project: CodeProject) {
   let updated = false

@@ -1,6 +1,6 @@
 import { Express } from "express";
 import path from "path";
-import { CodeRunner } from "../../drag-code-function";
+import { CodeRunner } from "@drag/code-function";
 import { DocService } from "./serviceDoc";
 import { uploadOSS } from "./serviceUpload";
 

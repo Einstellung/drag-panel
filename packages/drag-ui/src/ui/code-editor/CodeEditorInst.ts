@@ -3,6 +3,7 @@ import { CodeProject, FileTreeNode, PorjectJSON } from "@drag/code-model";
 import { debounce, Emiter } from "@drag/utils";
 import { updateContent } from "./CodeProjectRepo";
 import { CodeTopic } from "./codeTopic"
+import svcURLConfig from "@drag/svc-config"
 
 function first<T>(it: Iterator<T>): T | null {
   let next = it.next()
@@ -45,7 +46,8 @@ export class CodeEditorInst extends Emiter<CodeTopic>{
   }
 
   private async download() {
-    const { data } = await axios.get(`http://localhost:4003/code-project/${this.project.getName()}`)
+
+    const { data } = await axios.get(svcURLConfig.getCodeProject(this.project.getName()))
 
     const json: PorjectJSON = data.result
     this.project = CodeProject.fromJSON(json)

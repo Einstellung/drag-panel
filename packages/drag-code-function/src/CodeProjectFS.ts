@@ -2,7 +2,6 @@ import axios from "axios"
 import * as fs from "fs"
 import path from "path"
 import { CodeProject, FileTreeNode, PorjectJSON } from "@drag/code-model"
-// import { uploadOSS } from "../../drag-svc/src/serviceUpload"
 import fetch from "node-fetch"
 
 export class CodeProjectFS {
@@ -32,10 +31,14 @@ export class CodeProjectFS {
     const shouldUpdate = [...fNode.find(x => x.isDirty())]
     console.log(`found ${shouldUpdate.length} should update`)
 
-    // for(let file of shouldUpdate) {
-    //   const { url } = await uploadOSS(file.getFileName(), file.getContent())
-    //   file.setUrl(url)
-    // }
+    for(let file of shouldUpdate) {
+      // const { url } = await uploadOSS(file.getFileName(), file.getContent())
+      const { data } = await axios.post("http://localhost:4003/code-project-update", {
+        fileName: file.getFileName(),
+        fileContent: file.getContent()
+      })
+      file.setUrl(data.url)
+    }
 
     project.setRoot(fNode)
     const json = project.toJSON()

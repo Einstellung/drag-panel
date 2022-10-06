@@ -13,28 +13,11 @@ export function useCodeEditor(projectName: string) : [
 
   useEffect(() => {
     let selectFileName = ""
-    // editor.on(CodeTopic.Loaded, () => {
-    //   setVer(x => x+1)
-    // })
+
     editor.on(CodeTopic.Loaded)
       .subscribe(() => {
         setVer(x => x + 1)
       })
-
-    // editor.on(CodeTopic.fileClicked, (data: string) => {
-    //   // 只有先点击导航栏才能显示内容，那么这个时候其实已经知道文件名了
-    //   selectFileName = data
-    //   const content = editor.getSelectedFileContent(data)
-    //   const fileType = data.split(".").pop() || ""
-
-    //   setFileContent(content)
-    //   setType(fileType)
-    // })
-
-    // editor.on(CodeTopic.fileChanged, (changeContent: string) => {
-    //   editor.setSelectedFileContent(selectFileName, changeContent)
-    //   editor.debounceSaveContent()
-    // })
 
     editor.on(CodeTopic.fileClicked)
       .subscribe((data: string) => {

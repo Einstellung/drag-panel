@@ -22,7 +22,7 @@ export class CodeRunner {
     const projectFile = new CodeProjectFS(this.cwd)
     await projectFile.download(this.projectName)
 
-    await execPromise("yarn", {
+    await execPromise("pnpm", {
       cwd: this.cwd
     })
 
