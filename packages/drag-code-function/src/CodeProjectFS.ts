@@ -1,8 +1,9 @@
 import axios from "axios"
 import * as fs from "fs"
 import path from "path"
-import { CodeProject, FileTreeNode, PorjectJSON } from "@drag/code-model"
+import { CodeProject, FileTreeNode, PorjectJSON, ProjectType } from "@drag/code-model"
 import fetch from "node-fetch"
+import svcURLConfig from "@drag/svc-config"
 
 export class CodeProjectFS {
   constructor(private cwd: string) {
@@ -29,12 +30,11 @@ export class CodeProjectFS {
     const fNode = this.createFileNode(this.cwd, "")
     
     const shouldUpdate = [...fNode.find(x => x.isDirty())]
-    console.log(`found ${shouldUpdate.length} should update`)
+    console.info(`found ${shouldUpdate.length} should update: ${project.getType()}`)
 
     for(let file of shouldUpdate) {
-      // const { url } = await uploadOSS(file.getFileName(), file.getContent())
-      const { data } = await axios.post("http://localhost:4003/code-project-update", {
-        fileName: file.getFileName(),
+      const { data } = await axios.post(svcURLConfig.codeProjectUploadOSS, {
+        fileName: `${project.getType()}/${file.getFileName()}`,
         fileContent: file.getContent()
       })
       file.setUrl(data.url)
@@ -43,10 +43,16 @@ export class CodeProjectFS {
     project.setRoot(fNode)
     const json = project.toJSON()
 
-    await axios.post("http://localhost:4003/code-project", {
-      projectName: project.getName(),
-      projectDetail: json
-    })
+    try {
+      const val = await axios.post("http://localhost:4003/code-project", {
+        projectName: project.getName(),
+        projectDetail: json
+      })
+    } catch(e) {
+      console.log(e)
+    }
+
+    console.info("upload finish")
   }
 
   private async downloadFile(cwd: string, node: FileTreeNode) {
@@ -79,19 +85,27 @@ export class CodeProjectFS {
   }
 
   public async download(projectName: string) {
-    console.log("download file ", projectName)
+    console.log("download file", projectName)
     const { data } = await axios.get(`http://localhost:4003/code-project/${projectName}`)
 
     const json: PorjectJSON = data.result
     const project = CodeProject.fromJSON(json)
 
     await this.downloadFile(this.cwd, project.getRoot())
+    return project
   }
 
 
   public static async createTemplates() {
-    const project = new CodeProject("codeless")
-    const fs = new CodeProjectFS(path.relative(__dirname, "./template/codeless"))
-    await fs.upload(project)
+    for (let key in CodeProject.TemplateNames) {
+      const templateName = CodeProject.TemplateNames[key]
+
+      const project = new CodeProject(key, key as ProjectType)
+      const fs = new CodeProjectFS(
+        path.resolve(__dirname, "../template/", key)
+      )
+
+      await fs.upload(project)
+    }
   }
 }

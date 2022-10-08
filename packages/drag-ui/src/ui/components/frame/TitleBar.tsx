@@ -22,10 +22,13 @@ const Route = ({title, imgUrl, clickHref}: RouteProps) => {
 }
 
 
-export const TitleBar = () => {
+export const TitleBar = ({children = null}: {
+  children?: JSX.Element | null
+}) => {
   return (
     <header className={classes.titlebar}>
       <h2>DragPanel</h2>
+      <div className={classes.cmds}>{children}</div>
       <div className={classes.route}>
         <Route
           title="搭建平台"

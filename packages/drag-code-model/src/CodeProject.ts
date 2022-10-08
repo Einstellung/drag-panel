@@ -1,20 +1,31 @@
 import { FileTreeNode } from "./FileTreeNode"
-import { PorjectJSON } from "./types"
+import { PorjectJSON, ProjectType } from "./types"
 
 export class CodeProject {
+
+  public static TemplateNames: { [key in ProjectType]: string } = {
+    codeless: "codeless",
+    faas: "faas"
+  }
 
   private version: number
   private root: FileTreeNode
   private projectName: string
+  private projectType: ProjectType
 
-  constructor(projectName: string) {
+  constructor(projectName: string, projectType: ProjectType) {
     this.projectName = projectName
     this.root = new FileTreeNode("dir", "root")
     this.version = 0
+    this.projectType = projectType
   }
 
   public getName() {
     return this.projectName
+  }
+
+  public getType() {
+    return this.projectType
   }
 
   public setRoot(root: FileTreeNode) {
@@ -38,7 +49,7 @@ export class CodeProject {
   }
 
   public static fromJSON(json: PorjectJSON) {
-    const project = new CodeProject(json.name)
+    const project = new CodeProject(json.name, "codeless")
     project.version = json.version
     project.root = FileTreeNode.FromJSON(json.fileTree)
     return project

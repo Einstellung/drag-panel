@@ -6,19 +6,26 @@
   align-items: center;
 
   h2 {
-    flex-grow: 1;
-    margin : 0;   
+    // flex-grow: 1;
+    margin : 0;
     font-family: sans-serif;
     font-size : 36px;
     color : #6f6c6c;;
-    width : 170px;
+    width : fit-content;
     letter-spacing: 1px;
+  }
+
+  .cmds {
+    // flex-grow: 1;
+    padding-left: 40px;
   }
 
   .route {
     display: flex;
     flex-direction: row;
     margin-right: 40px;
+    flex-grow: 1;
+    justify-content: flex-end;
 
     .btn {
       width: 44px;

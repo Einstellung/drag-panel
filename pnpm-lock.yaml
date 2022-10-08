@@ -49,18 +49,36 @@ importers:
   packages/drag-code-function:
     specifiers:
       '@drag/code-model': workspace:^1.0.0
+      '@drag/svc-config': workspace:^1.0.0
+      '@rollup/plugin-commonjs': ^22.0.2
+      '@rollup/plugin-node-resolve': ^14.1.0
       '@types/node': ^18.7.13
       axios: ^1.0.0
       node-fetch: 2.6.7
+      rollup: ^2.79.1
+      rollup-plugin-typescript2: ^0.34.1
+      typescript: ^4.6.4
     dependencies:
       '@drag/code-model': link:../drag-code-model
+      '@drag/svc-config': link:../drag-svc-config
+      '@rollup/plugin-commonjs': registry.npmmirror.com/@rollup/plugin-commonjs/22.0.2_rollup@2.79.1
+      '@rollup/plugin-node-resolve': registry.npmmirror.com/@rollup/plugin-node-resolve/14.1.0_rollup@2.79.1
       axios: registry.npmmirror.com/axios/1.0.0
       node-fetch: registry.npmmirror.com/node-fetch/2.6.7
+      rollup: registry.npmmirror.com/rollup/2.79.1
+      rollup-plugin-typescript2: registry.npmmirror.com/rollup-plugin-typescript2/0.34.1_gypgyaqhine6mwjfvh7icfhviq
+      typescript: registry.npmmirror.com/typescript/4.8.4
     devDependencies:
       '@types/node': registry.npmmirror.com/@types/node/18.8.0
 
   packages/drag-code-model:
     specifiers: {}
+
+  packages/drag-code-runtime:
+    specifiers:
+      '@drag/meta': workspace:^1.0.0
+    dependencies:
+      '@drag/meta': link:../drag-meta
 
   packages/drag-loader:
     specifiers:

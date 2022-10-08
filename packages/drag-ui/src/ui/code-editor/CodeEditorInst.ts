@@ -19,7 +19,7 @@ export class CodeEditorInst extends Emiter<CodeTopic>{
   constructor(projectName: string) {
     super()
     // this.project = mockProject()
-    this.project = new CodeProject(projectName)
+    this.project = new CodeProject(projectName, "codeless")
     this.download()
   }
 
@@ -67,6 +67,12 @@ export class CodeEditorInst extends Emiter<CodeTopic>{
 
     this.emit(CodeTopic.Loaded)
   }
+
+  /** 编译codeless */
+  async build() {
+    console.log("build success")
+    await axios.put(svcURLConfig.codeBuildFile("codeless"))
+  }
 }
 
 function mockProject() {
@@ -89,7 +95,7 @@ function mockProject() {
       url : ''
     }]    
   })
-  const project = new CodeProject("mockFile")
+  const project = new CodeProject("mockFile", "codeless")
   project.setRoot(root)
   return project
 }

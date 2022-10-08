@@ -21,6 +21,11 @@ const json: JsonPage = {
   }
 }
 
+/** 将codeless脚本代码注入到preview页面中 */
+function useScript(text: string, ctx: any) {
+
+}
+
 export const usePage = () => {
   const [page, setPage] = useState<Page | null>(null)
 

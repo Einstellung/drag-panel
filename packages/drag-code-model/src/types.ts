@@ -1,3 +1,5 @@
+export type ProjectType = "codeless" | "faas"
+
 export type FileType = "dir" | "file"
 
 export type FileNodeJSON = {
