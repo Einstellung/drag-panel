@@ -1,6 +1,7 @@
 import path from "path";
 import { InputOptions, OutputOptions } from "rollup";
-import typescript from 'rollup-plugin-typescript2'
+// import typescript from 'rollup-plugin-typescript2'
+import typescript from "@rollup/plugin-typescript";
 import commonjs from "@rollup/plugin-commonjs"
 import resolve from "@rollup/plugin-node-resolve"
 
@@ -11,7 +12,10 @@ export class RollupConfig {
 
   private plugins() {
     return [
-      typescript(),
+      typescript({
+        typescript: require("typescript"),
+        tsconfig: path.resolve(this.cwd, "tsconfig.json")
+      }),
       commonjs(),
       resolve({
         extensions : ['ts']

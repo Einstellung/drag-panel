@@ -12,12 +12,14 @@ export class CodeProject {
   private root: FileTreeNode
   private projectName: string
   private projectType: ProjectType
+  private projectBuildUrl: string
 
   constructor(projectName: string, projectType: ProjectType) {
     this.projectName = projectName
     this.root = new FileTreeNode("dir", "root")
     this.version = 0
     this.projectType = projectType
+    this.projectBuildUrl = ""
   }
 
   public getName() {
@@ -44,14 +46,23 @@ export class CodeProject {
     return {
       name: this.projectName,
       fileTree: this.getRoot().toJSON(),
-      version: this.version
+      version: this.version,
+      projectBuildUrl: this.projectBuildUrl
     }
   }
 
-  public static fromJSON(json: PorjectJSON) {
-    const project = new CodeProject(json.name, "codeless")
+  public static fromJSON(json: PorjectJSON, projectType: ProjectType) {
+    const project = new CodeProject(json.name, projectType)
     project.version = json.version
     project.root = FileTreeNode.FromJSON(json.fileTree)
     return project
+  }
+
+  setBuildUrl(url: string) {
+    this.projectBuildUrl = url
+  }
+
+  getBuildUrl() {
+    return this.projectBuildUrl
   }
 }

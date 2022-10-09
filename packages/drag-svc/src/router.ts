@@ -34,14 +34,11 @@ export function router(app: Express) {
     })
   })
 
+  // 向数据库中更新数据
   app.get("/code-project/:projectName", async (req, res) => {
     const docSvc = new DocService("code-project", req.params)
     const result = await docSvc.get()
-    console.log("🚀 ~ file: router.ts ~ line 36 ~ app.get ~ result", result)
-    // @ts-ignore
-    for (const r of result.fileTree.children) {
-      console.log("🚀 ~ file: router.ts ~ line 39 ~ app.get ~ r", r)
-    }
+
     res.send({
       result
     })
@@ -63,7 +60,7 @@ export function router(app: Express) {
   app.put("/build/:codeType", async (req, res) => {
     const codeType = req.params.codeType as "codeless" | "faas"
 
-    const cwd = path.resolve(__dirname, "../tmp-build/codeless-build")
+    const cwd = path.resolve(__dirname, "../tmp-build/")
     console.log("start build...")
 
     if(!fs.existsSync(cwd)) {

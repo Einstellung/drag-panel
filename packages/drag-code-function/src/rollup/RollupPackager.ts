@@ -14,9 +14,9 @@ export class RollupPackager {
 
       for (const chunkOrAsset of output) {
         if (chunkOrAsset.type === "asset") {
-          console.log("Asset", chunkOrAsset.fileName)
+          console.log("[Asset]:", chunkOrAsset.fileName)
         } else {
-          console.log("Chunk", chunkOrAsset.fileName)
+          console.log("[Chunk]:", chunkOrAsset.fileName)
         }
       }
 

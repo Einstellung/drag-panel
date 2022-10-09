@@ -8,5 +8,9 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@drag/svc-config": "workspace:^1.0.0",
+    "axios": "^1.0.0"
+  }
 }

@@ -1,4 +1,4 @@
-import { ProjectType } from "@drag/code-model";
+import { ProjectType, updateContent } from "@drag/code-model";
 import { CodeProjectFS } from "./CodeProjectFS";
 import { RollupPackager } from "./rollup/RollupPackager";
 import fs from "fs"
@@ -11,19 +11,23 @@ export class ProjectBuilder {
     const projectFS = new CodeProjectFS(cwd)
     const project = await projectFS.download(typeName)
 
-    console.log("project downloaded...", cwd)
+    console.log("[project downloaded dir]", cwd)
 
     switch(project.getType() as ProjectType | "undefined") {
       case "codeless" :
         const rollup = new RollupPackager(cwd)
 
         await rollup.build()
-        const uploadFile = fs.readdirSync(path.resolve(cwd, "build/index.js"), "utf-8")
+
+        const uploadFile = fs.readFileSync(path.resolve(cwd, "build/index.js"), "utf-8")
         const uploadResult = await axios.post(svcURLConfig.codeProjectUploadOSS, {
           fileName: "codeless-build.js",
           fileContent: uploadFile
         })
-        console.log("🚀 ~ file: ProjectBuildre.ts ~ line 26 ~ ProjectBuilder ~ build ~ uploadResult", uploadResult)
+
+        project.setBuildUrl(uploadResult.data.url)
+        await updateContent(project)
+        break
 
       case "faas":
         break

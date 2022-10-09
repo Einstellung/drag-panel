@@ -12,5 +12,6 @@ export type FileNodeJSON = {
 export type PorjectJSON = {
   name: string,
   fileTree: FileNodeJSON,
-  version: number
+  version: number,
+  projectBuildUrl: string
 }

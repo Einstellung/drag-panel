@@ -85,11 +85,11 @@ export class CodeProjectFS {
   }
 
   public async download(projectName: string) {
-    console.log("download file", projectName)
+    console.log("[download file]", projectName)
     const { data } = await axios.get(`http://localhost:4003/code-project/${projectName}`)
 
     const json: PorjectJSON = data.result
-    const project = CodeProject.fromJSON(json)
+    const project = CodeProject.fromJSON(json, projectName as ProjectType)
 
     await this.downloadFile(this.cwd, project.getRoot())
     return project

@@ -1,7 +1,8 @@
 import axios from "axios";
-import { CodeProject } from "@drag/code-model";
+import { CodeProject } from "./CodeProject";
 import svcURLConfig from "@drag/svc-config";
 
+// 数据发生变更时更新数据库和oss
 export async function updateContent(project: CodeProject) {
   let updated = false
 

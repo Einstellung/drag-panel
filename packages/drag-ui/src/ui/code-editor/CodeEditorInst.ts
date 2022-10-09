@@ -1,7 +1,6 @@
 import axios from "axios";
-import { CodeProject, FileTreeNode, PorjectJSON } from "@drag/code-model";
+import { CodeProject, FileTreeNode, PorjectJSON, updateContent } from "@drag/code-model";
 import { debounce, Emiter } from "@drag/utils";
-import { updateContent } from "./CodeProjectRepo";
 import { CodeTopic } from "./codeTopic"
 import svcURLConfig from "@drag/svc-config"
 
@@ -50,7 +49,7 @@ export class CodeEditorInst extends Emiter<CodeTopic>{
     const { data } = await axios.get(svcURLConfig.getCodeProject(this.project.getName()))
 
     const json: PorjectJSON = data.result
-    this.project = CodeProject.fromJSON(json)
+    this.project = CodeProject.fromJSON(json, "codeless")
 
     const files = [...this.project.getRoot().find(x => x.getType() === "file")]
       .filter(x => x.getUrl())
