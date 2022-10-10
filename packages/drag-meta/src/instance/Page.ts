@@ -88,4 +88,8 @@ export class Page extends Emiter<Topic> {
   getRoot() {
     return this.root
   }
+
+  getPageNode() {
+    return this.pageNode
+  }
 }

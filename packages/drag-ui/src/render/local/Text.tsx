@@ -1,4 +1,5 @@
-import { Bridge } from "@drag/meta"
+import { Bridge, Topic } from "@drag/meta"
+import { useEffect, useState } from "react"
 import classes from "./component.module.scss"
 
 interface TextPassProps {
@@ -15,6 +16,14 @@ export const Text = ({bridge, passProps}: {
   passProps: TextPassProps
 }) => {
 
+  const [, setVer] = useState(0)
+  useEffect(() => {
+    bridge.on(Topic.MemorizedDataChanged)
+      .subscribe(() => {
+        setVer(x => x + 1)
+      })
+  }, [])
+
   const applyStyle = {
     fontFamily: passProps.fontFamily,
     fontSize: passProps.fontSize,
@@ -23,9 +32,13 @@ export const Text = ({bridge, passProps}: {
     ...passProps.style
   }
 
+  const tmpData = bridge.getTmpData()
+
   return (
     <div className={classes.text} style={applyStyle}>
-      <p>{passProps.text}</p>
+      <p>
+        {tmpData ? tmpData : passProps.text}
+      </p>
     </div>
   )
 }

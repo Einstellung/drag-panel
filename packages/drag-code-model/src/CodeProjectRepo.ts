@@ -1,6 +1,7 @@
 import axios from "axios";
 import { CodeProject } from "./CodeProject";
 import svcURLConfig from "@drag/svc-config";
+import { ProjectType } from "./types";
 
 // 数据发生变更时更新数据库和oss
 export async function updateContent(project: CodeProject) {
@@ -20,10 +21,17 @@ export async function updateContent(project: CodeProject) {
 
   if(updated) {
     project.increVer()
-
-    await axios.post("http://localhost:4003/code-project", {
-      projectName: project.getName(),
-      projectDetail: project.toJSON()
-    })
   }
+
+  await axios.post("http://localhost:4003/code-project", {
+    projectName: project.getName(),
+    projectDetail: project.toJSON()
+  })
+}
+
+export async function loadProject(projectName: string) {
+  const { data } = await axios.get(svcURLConfig.getCodeProject(projectName))
+  
+  const project = CodeProject.fromJSON(data.result, projectName as ProjectType)
+  return project
 }

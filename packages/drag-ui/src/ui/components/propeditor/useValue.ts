@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react'
 
+// 数据变更时在这里onChange
 function useValue<T>(
 	initialValue : ((() => T) | T), 
 	onChange : ((v : T) => void)

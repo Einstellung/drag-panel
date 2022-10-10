@@ -15,6 +15,8 @@ export class Node extends Emiter<Topic> {
   private data: NodeData
   /** node层级关系 */
   level = 0
+  /** 用于缓存临时数据，目前用在codeless中传递data文本信息 */
+  private tmpData: any
   constructor(meta: ComponentMeta, data: NodeData) {
     super()
     this.meta = meta
@@ -255,5 +257,37 @@ export class Node extends Emiter<Topic> {
     const newJson = {...json, box: json.box?.toJSON()}
     newJson.children = this.getChildren().map(child => child.toJSON())
     return newJson as JsonNode
+  }
+
+  *bfs(): Generator<Node> {
+    const queue: Array<Node> = [this]
+    let limit = 1000
+
+    while(queue.length > 0 && limit-- > 0) {
+      const node = queue.shift()
+      if(!node) {
+        continue
+      }
+
+      yield node
+
+      for (let child of node.getChildren()) {
+        queue.push(child)
+      }
+    }
+
+    if(limit === -1) {
+      throw new Error("limit exceed")
+    }
+  }
+
+  // codeless缓存数据
+  setMemory(data: any) {
+    this.tmpData = data
+    this.emit(Topic.MemorizedDataChanged)
+  }
+
+  getMemory() {
+    return this.tmpData
   }
 }

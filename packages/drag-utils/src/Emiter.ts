@@ -4,7 +4,7 @@ export class Emiter<Topic extends number> {
   observers : Array<Array<Subscriber<any>>>
 
   constructor(){
-    // 不会超过20个枚举了
+    // 不会超过50个枚举了
     this.observers = new Array(50) 
   }
 

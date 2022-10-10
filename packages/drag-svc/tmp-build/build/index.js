@@ -1,6 +1,6 @@
 define((function () { 'use strict';
 
-    /*! *****************************************************************************
+    /******************************************************************************
     Copyright (c) Microsoft Corporation.
 
     Permission to use, copy, modify, and/or distribute this software for any
@@ -53,10 +53,15 @@ define((function () { 'use strict';
         }
     }
 
-    function run() {
+    function run(ctx) {
         return __awaiter(this, void 0, void 0, function () {
+            var btn, txt;
             return __generator(this, function (_a) {
-                console.log('hello');
+                btn = ctx.select("btn");
+                txt = ctx.select("txt");
+                btn.on("click", function () {
+                    txt.memory("你好！");
+                });
                 return [2 /*return*/];
             });
         });

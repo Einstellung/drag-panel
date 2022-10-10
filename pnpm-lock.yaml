@@ -57,16 +57,18 @@ importers:
       axios: ^1.0.0
       node-fetch: 2.6.7
       rollup: ^2.79.1
+      tslib: ^2.4.0
       typescript: ^4.6.4
     dependencies:
       '@drag/code-model': link:../drag-code-model
       '@drag/svc-config': link:../drag-svc-config
       '@rollup/plugin-commonjs': registry.npmmirror.com/@rollup/plugin-commonjs/22.0.2_rollup@2.79.1
       '@rollup/plugin-node-resolve': registry.npmmirror.com/@rollup/plugin-node-resolve/14.1.0_rollup@2.79.1
-      '@rollup/plugin-typescript': registry.npmmirror.com/@rollup/plugin-typescript/8.5.0_gypgyaqhine6mwjfvh7icfhviq
+      '@rollup/plugin-typescript': registry.npmmirror.com/@rollup/plugin-typescript/8.5.0_hafrwlgfjmvsm7253l3bfjzhnq
       axios: registry.npmmirror.com/axios/1.0.0
       node-fetch: registry.npmmirror.com/node-fetch/2.6.7
       rollup: registry.npmmirror.com/rollup/2.79.1
+      tslib: registry.npmmirror.com/tslib/2.4.0
       typescript: registry.npmmirror.com/typescript/4.8.4
     devDependencies:
       '@types/node': registry.npmmirror.com/@types/node/18.8.0
@@ -151,6 +153,7 @@ importers:
     specifiers:
       '@ant-design/icons': ^4.7.0
       '@drag/code-model': workspace:^1.0.0
+      '@drag/code-runtime': workspace:^1.0.0
       '@drag/loader': workspace:^1.0.0
       '@drag/meta': workspace:^1.0.0
       '@drag/svc-config': workspace:^1.0.0
@@ -184,6 +187,7 @@ importers:
     dependencies:
       '@ant-design/icons': registry.npmmirror.com/@ant-design/icons/4.7.0_biqbaboplfbrettd7655fr4n2y
       '@drag/code-model': link:../drag-code-model
+      '@drag/code-runtime': link:../drag-code-runtime
       '@drag/loader': link:../drag-loader
       '@drag/meta': link:../drag-meta
       '@drag/svc-config': link:../drag-svc-config
@@ -853,7 +857,7 @@ packages:
       rollup: registry.npmmirror.com/rollup/2.79.1
     dev: false
 
-  registry.npmmirror.com/@rollup/plugin-typescript/8.5.0_gypgyaqhine6mwjfvh7icfhviq:
+  registry.npmmirror.com/@rollup/plugin-typescript/8.5.0_hafrwlgfjmvsm7253l3bfjzhnq:
     resolution: {integrity: sha512-wMv1/scv0m/rXx21wD2IsBbJFba8wGF3ErJIr6IKRfRj49S85Lszbxb4DCo8iILpluTjk2GAAu9CoZt4G3ppgQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@rollup/plugin-typescript/-/plugin-typescript-8.5.0.tgz}
     id: registry.npmmirror.com/@rollup/plugin-typescript/8.5.0
     name: '@rollup/plugin-typescript'
@@ -870,6 +874,7 @@ packages:
       '@rollup/pluginutils': registry.npmmirror.com/@rollup/pluginutils/3.1.0_rollup@2.79.1
       resolve: registry.npmmirror.com/resolve/1.22.1
       rollup: registry.npmmirror.com/rollup/2.79.1
+      tslib: registry.npmmirror.com/tslib/2.4.0
       typescript: registry.npmmirror.com/typescript/4.8.4
     dev: false
 

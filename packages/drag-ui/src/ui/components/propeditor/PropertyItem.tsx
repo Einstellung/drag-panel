@@ -18,7 +18,7 @@ function render(type: string, props: any, key: any) {
       return <SizeInput key={key} {...props}/>
     // 在codeless中使用
     case "name":
-      return <StringInput />
+      return <StringInput key={key} {...props}/>
     // 比如边框等输入框
     case "integer":
       return <Integer key={key} {...props}/>

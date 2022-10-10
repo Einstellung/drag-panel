@@ -55,6 +55,7 @@ export class CodeProject {
     const project = new CodeProject(json.name, projectType)
     project.version = json.version
     project.root = FileTreeNode.FromJSON(json.fileTree)
+    project.projectBuildUrl = json.projectBuildUrl
     return project
   }
 

@@ -11,6 +11,7 @@
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
     "@drag/code-model": "workspace:^1.0.0",
+    "@drag/code-runtime": "workspace:^1.0.0",
     "@drag/loader": "workspace:^1.0.0",
     "@drag/meta": "workspace:^1.0.0",
     "@drag/svc-config": "workspace:^1.0.0",

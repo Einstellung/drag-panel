@@ -27,7 +27,12 @@ export const Button = ({bridge, passProps}: ButtonProps) => {
 
   const text = passProps.text
   return (
-    <div className={classes.button} style={applyStyle}>
+    <div className={classes.button} 
+      style={applyStyle}
+      onClick={() => {
+        bridge.notify("click")
+      }}
+    >
       <button>{text}</button>
     </div>
   )
